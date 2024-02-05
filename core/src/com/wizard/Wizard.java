@@ -30,5 +30,6 @@ public class Wizard extends ApplicationAdapter {
 	@Override
 	public void resize(int width, int height){
 		w.resize(width,height);
+		o.resize(width,height);
 	}
 }

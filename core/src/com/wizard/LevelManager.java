@@ -6,6 +6,9 @@ import com.badlogic.gdx.files.FileHandle;
 import java.util.HashMap;
 
 public class LevelManager {
+
+
+
     public static Level load(String name){
         FileHandle file = Gdx.files.internal("levels" +"/"+ name);
 
@@ -39,11 +42,12 @@ public class LevelManager {
 
             else {
                 String[] blocks = line.split(" ");
-                int y = i - (2+blockAmount);
+                //voodoo magic do not touch
+                int x = (i - (2+blockAmount));
 
 
-                for (int x = 0; x < width; x++){
-                    Block newBlock = new Block(decoderMap.get(Integer.parseInt(blocks[x])));
+                for (int y = 0; y < height; y++){
+                    Block newBlock = new Block(decoderMap.get(Integer.parseInt(blocks[y])));
                     outLevel.blockArray[x][y] = newBlock;
                 }
             }
