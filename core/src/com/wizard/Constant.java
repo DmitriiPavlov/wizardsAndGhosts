@@ -9,4 +9,5 @@ public class Constant {
 
     public static float CHARACTER_HITBOX_WIDTH = 0.9F;
     public static float CHARACTER_HITBOX_HEIGHT = 0.5F;
+    public static long textSpeed = 30;
 }

@@ -18,4 +18,21 @@ public class Enemy extends Entity{
         directionVector.nor();
         interpolateMotion(directionVector.x * deltaTime,directionVector.y * deltaTime);
     }
+
+    public void interpolateMotion(float dx, float dy) {
+        int interpolationConstant = (int) SPEED;
+
+        for (int i = 0; i < interpolationConstant; i++) {
+            this.moveBy(dx / interpolationConstant, 0);
+            if (CollisionManager.isHittingBlock(this) || null != CollisionManager.isCollidingEnemy(this)) {
+                this.moveBy(-dx / interpolationConstant, 0);
+            }
+
+            this.moveBy(0, dy / interpolationConstant);
+            if (CollisionManager.isHittingBlock(this) || null != CollisionManager.isCollidingEnemy(this)) {
+                this.moveBy(0, -dy / interpolationConstant);
+            }
+
+        }
+    }
 }

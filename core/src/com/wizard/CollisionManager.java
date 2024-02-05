@@ -33,9 +33,11 @@ public class CollisionManager {
         Rectangle entityRect = new Rectangle(); entity.getHitbox(entityRect);
         Rectangle enemyRect = new Rectangle();
         for (Enemy enemy : collidableEnemies){
-            enemy.getHitbox(enemyRect);
-            if (enemyRect.overlaps(entityRect)){
-                return enemy;
+            if ((Entity) enemy != entity) {
+                enemy.getHitbox(enemyRect);
+                if (enemyRect.overlaps(entityRect)) {
+                    return enemy;
+                }
             }
         }
         return null;

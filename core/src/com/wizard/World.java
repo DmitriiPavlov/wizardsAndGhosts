@@ -27,7 +27,7 @@ public class World extends Stage {
         this.addActor(backGround);
 
 
-        currentLevel = LevelManager.load("default");
+        currentLevel = LevelManager.load("level0");
         currentLevel.setPosition(0,0);
 
         CollisionManager.currentLevel = currentLevel;
@@ -36,14 +36,18 @@ public class World extends Stage {
         currentLevel.addActor(player);
         this.addActor(currentLevel);
         this.addActor(new Enemy(3,3,1,1.2F));
-
+        this.addActor(new Enemy(4,5,1,1.2F));
+        this.addActor(new Enemy(2,3,1,1.2F));
+        this.addActor(new Enemy(6,3,1,1.2F));
 
         //event listener for a click (projectile fired)
         this.addListener(new InputListener(){
             long lastTime = 0;
+
+
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (button == Input.Buttons.LEFT && TimeUtils.timeSinceMillis(lastTime) > 100){
+                if (button == Input.Buttons.LEFT && TimeUtils.timeSinceMillis(lastTime) > 300){
                     //we want to make a projectile that fires this way
                     ProjectileManager.createMint(x - player.getX(), y -player.getY(), player.getX(),player.getY());
                     lastTime = TimeUtils.millis();
@@ -66,4 +70,15 @@ public class World extends Stage {
         super.draw();
     }
 
+    @Override
+    public void act() {
+        super.act();
+        //this line is to see if the player goes out of bounds above
+        if (player.getY() > currentLevel.blockArray.length){
+            currentLevel = LevelManager.load("default");
+            currentLevel.setPosition(0,0);
+            CollisionManager.currentLevel = currentLevel;
+            player.setPosition(this.currentLevel.blockArray[0].length/2, 1);
+        }
+    }
 }
