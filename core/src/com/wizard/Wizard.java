@@ -17,7 +17,7 @@ public class Wizard extends ApplicationAdapter {
 
 	@Override
 	public void render () {
-		ScreenUtils.clear(0.1F, 0.1F, 0.1F, 1);
+		ScreenUtils.clear(0F, 0F, 0F, 1);
 		w.act();
 		w.draw();
 		o.act();

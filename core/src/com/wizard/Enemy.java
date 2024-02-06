@@ -19,11 +19,13 @@ public class Enemy extends Entity{
         interpolateMotion(directionVector.x * deltaTime,directionVector.y * deltaTime);
     }
 
+    //SO ENEMIES CAN COLLIDE WITH EACH OTHER AND DONT BUNCH UP
     public void interpolateMotion(float dx, float dy) {
         int interpolationConstant = (int) SPEED;
 
         for (int i = 0; i < interpolationConstant; i++) {
             this.moveBy(dx / interpolationConstant, 0);
+
             if (CollisionManager.isHittingBlock(this) || null != CollisionManager.isCollidingEnemy(this)) {
                 this.moveBy(-dx / interpolationConstant, 0);
             }

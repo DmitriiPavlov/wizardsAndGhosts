@@ -38,6 +38,7 @@ public class World extends Stage {
         loadNextLevel();
 
 
+
         //event listener for a click (projectile fired)
         this.addListener(new InputListener(){
             long lastTime = 0;
