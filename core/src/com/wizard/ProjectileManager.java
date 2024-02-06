@@ -1,5 +1,7 @@
 package com.wizard;
 
+import com.badlogic.gdx.math.Vector2;
+
 public class ProjectileManager {
     //manages projectiles and their trajectories
     public static World stage;
@@ -71,9 +73,12 @@ public class ProjectileManager {
         Projectile out = new Projectile("tictac.png");
         out.range = 3;
         out.dx = dx * speedRatio; out.dy = dy * speedRatio;
-        out.setBounds(x,y,0.2F,0.2F);
+        out.setBounds(x,y,3.0F,3.0F);
+        out.setOrigin(out.getWidth()/2, out.getHeight()/2);
+        out.rotate((new Vector2(dx,dy)).angleDeg(new Vector2(1,0)));
         out.hitsEnemies = true;
-
         stage.addActor(out);
+
+
     }
 }

@@ -1,10 +1,8 @@
 package com.wizard;
 
 import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import org.w3c.dom.css.Rect;
 
 public class Entity extends Group {
     public Image sprite;
@@ -60,4 +58,16 @@ public class Entity extends Group {
     public void getHitbox(Rectangle outRect){
         outRect.set(this.getX() + this.sprite.getX(),this.getY() + this.sprite.getY(), this.sprite.getHeight(),this.sprite.getWidth());
     }
+
+    public void rotate(float degrees){
+        this.sprite.rotateBy(degrees);
+    }
+
+    public float centerX(){
+        return this.getX() + this.sprite.getX() + this.sprite.getWidth()/2;
+    }
+    public float centerY(){
+        return this.getY() + this.sprite.getY() + this.sprite.getHeight()/2;
+    }
+
 }

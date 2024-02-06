@@ -9,8 +9,13 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
 
+import java.util.ArrayList;
+
 public class World extends Stage {
     public static Level currentLevel;
+
+    public static ArrayList<Level> levelList = new ArrayList<>();
+    public static int indexLevel = -1;
     public static Character player;
     public World(){
         //this is where everything gets initiated, like texture manager and projectile manager
@@ -26,19 +31,12 @@ public class World extends Stage {
         backGround.setBounds(-10000,-10000,50000,50000);
         this.addActor(backGround);
 
-
-        currentLevel = LevelManager.load("level0");
-        currentLevel.setPosition(0,0);
-
-        CollisionManager.currentLevel = currentLevel;
         player = new Character(1,1,Constant.CHARACTER_WIDTH,Constant.CHARACTER_HEIGHT);
         CollisionManager.character = player;
-        currentLevel.addActor(player);
-        this.addActor(currentLevel);
-        this.addActor(new Enemy(3,3,1,1.2F));
-        this.addActor(new Enemy(4,5,1,1.2F));
-        this.addActor(new Enemy(2,3,1,1.2F));
-        this.addActor(new Enemy(6,3,1,1.2F));
+        this.addActor(player);
+
+        loadNextLevel();
+
 
         //event listener for a click (projectile fired)
         this.addListener(new InputListener(){
@@ -47,9 +45,9 @@ public class World extends Stage {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (button == Input.Buttons.LEFT && TimeUtils.timeSinceMillis(lastTime) > 300){
+                if (button == Input.Buttons.LEFT && TimeUtils.timeSinceMillis(lastTime) > 500){
                     //we want to make a projectile that fires this way
-                    ProjectileManager.createMint(x - player.getX(), y -player.getY(), player.getX(),player.getY());
+                    ProjectileManager.createTicTac(x - player.centerX(), y - player.centerY(), player.centerX(), player.centerY());
                     lastTime = TimeUtils.millis();
                     return true;
                 }
@@ -65,6 +63,7 @@ public class World extends Stage {
     }
 
     public void draw(){
+        this.player.setZIndex(100);
         this.getViewport().apply();
         this.getCamera().position.set(player.getX(),player.getY(),0);
         super.draw();
@@ -75,10 +74,66 @@ public class World extends Stage {
         super.act();
         //this line is to see if the player goes out of bounds above
         if (player.getY() > currentLevel.blockArray.length){
-            currentLevel = LevelManager.load("default");
-            currentLevel.setPosition(0,0);
-            CollisionManager.currentLevel = currentLevel;
-            player.setPosition(this.currentLevel.blockArray[0].length/2, 1);
+            loadNextLevel();
+        }
+
+        if (player.getY() < 0){
+            loadPreviousLevel();
+        }
+
+    }
+
+    public void loadNextLevel(){
+        indexLevel+=1;
+        //this sees if we're creating the level for the first time
+        Level newLevel = null;
+        if (levelList.size() == indexLevel) {
+            newLevel = LevelManager.load(String.valueOf(indexLevel));
+            if (newLevel == null){
+                indexLevel -= 1;
+                return;
+            };
+            levelList.add(newLevel);
+            //spawns NPCS
+            populateLevel(newLevel);
+        }
+        else{
+            newLevel = levelList.get(indexLevel);
+        }
+        if (currentLevel != null) currentLevel.remove();
+        currentLevel = newLevel;
+
+        currentLevel.setPosition(0,0);
+        CollisionManager.currentLevel = currentLevel;
+        this.addActor(currentLevel);
+        currentLevel.setZIndex(1);
+        player.setPosition(this.currentLevel.blockArray[0].length/2, 1);
+
+    }
+
+    public void loadPreviousLevel(){
+        if (indexLevel == 0) return;
+        indexLevel-=1;
+        Level newLevel = levelList.get(indexLevel);
+        if (newLevel == null) return;
+
+        if (currentLevel != null) currentLevel.remove();
+        currentLevel = newLevel;
+        currentLevel.setPosition(0,0);
+        CollisionManager.currentLevel = currentLevel;
+        this.addActor(currentLevel);
+        currentLevel.setZIndex(1);
+        player.setPosition(this.currentLevel.blockArray[0].length/2, this.currentLevel.blockArray.length-1);
+    }
+
+    //this goes through and adds all the necessary enemies to a level
+    public void populateLevel(Level toPopulate){
+        switch (indexLevel){
+            case 1:
+                toPopulate.addActor(new Enemy(3,3,1,1.2F));
+                toPopulate.addActor(new Enemy(4,5,1,1.2F));
+                toPopulate.addActor(new Enemy(2,3,1,1.2F));
+                toPopulate.addActor(new Enemy(6,3,1,1.2F));
         }
     }
 }
