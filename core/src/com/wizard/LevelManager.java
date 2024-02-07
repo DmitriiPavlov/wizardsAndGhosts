@@ -42,7 +42,7 @@ public class LevelManager {
                 int x = i - (2+blockAmount);
 
 
-                for (int y = 0; y < width; y++){
+                for (int y = 0; y < height; y++){
                     Block newBlock = new Block(decoderMap.get(Integer.parseInt(blocks[y])));
                     outLevel.blockArray[x][y] = newBlock;
                 }

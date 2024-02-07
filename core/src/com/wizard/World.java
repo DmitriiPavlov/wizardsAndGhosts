@@ -48,7 +48,7 @@ public class World extends Stage {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (button == Input.Buttons.LEFT && TimeUtils.timeSinceMillis(lastTime) > 500){
                     //we want to make a projectile that fires this way
-                    ProjectileManager.createTicTac(x - player.centerX(), y - player.centerY(), player.centerX(), player.centerY());
+                    ProjectileManager.createCandyBlast(x - player.centerX(), y - player.centerY(), player.centerX(), player.centerY());
                     lastTime = TimeUtils.millis();
                     return true;
                 }
@@ -74,7 +74,7 @@ public class World extends Stage {
     public void act() {
         super.act();
         //this line is to see if the player goes out of bounds above
-        if (player.getY() > currentLevel.blockArray.length){
+        if (player.getY() > currentLevel.blockArray[0].length){
             loadNextLevel();
         }
 
@@ -130,11 +130,18 @@ public class World extends Stage {
     //this goes through and adds all the necessary enemies to a level
     public void populateLevel(Level toPopulate){
         switch (indexLevel){
+            case 0:
+                toPopulate.addActor(new Enemy(3,3,1,1.2F));
+                toPopulate.addActor(new Enemy(4,5,1,1.2F));
+                toPopulate.addActor(new Enemy(2,3,1,1.2F));
+                toPopulate.addActor(new Enemy(6,3,1,1.2F));
+                break;
             case 1:
                 toPopulate.addActor(new Enemy(3,3,1,1.2F));
                 toPopulate.addActor(new Enemy(4,5,1,1.2F));
                 toPopulate.addActor(new Enemy(2,3,1,1.2F));
                 toPopulate.addActor(new Enemy(6,3,1,1.2F));
+                break;
         }
     }
 }
