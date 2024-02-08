@@ -126,7 +126,8 @@ public class ProjectileManager {
                 out.hitsEnemies = true;
                 World.currentLevel.addActor(out);
             } else {
-                out = new Projectile("GreenCandyWHitBox.png");
+                out = new Projectile("YellowCandyWHitBox.png");
+                System.out.println("yolo");
                 out.range = 4.0F;
                 out.dx = dx + (float) ((int) (Math.random() * 4.0 - 2.0)) * speedRatio;
                 out.dy = dy + (float) ((int) (Math.random() * 4.0 - 2.0)) * speedRatio;
