@@ -1,6 +1,7 @@
 package com.wizard;
 
 import com.badlogic.gdx.math.MathUtils;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -143,7 +144,12 @@ public class ProjectileManager {
         int dy = MathUtils.random(1,100)-50;
         float currSpeed = (float) Math.sqrt((double) (dx * dx + dy * dy));
         float speedRatio = 10.0F / currSpeed;
-        Projectile out = new Projectile("WhiteGhost.png");
+        Projectile out = new Projectile("WhiteGhost.png"){
+            @Override
+            public void getHitbox(Rectangle outRect) {
+                outRect.set(0,0,0,0);
+            }
+        };
         out.range = 10.0F;
         out.dx = dx * speedRatio;
         out.dy = dy * speedRatio;
