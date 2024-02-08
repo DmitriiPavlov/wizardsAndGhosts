@@ -25,8 +25,6 @@ public class Overlay extends Stage {
 
         textField = new ScreenPrinter(this);
         this.addActor(textField);
-        this.textField.queueText("Arcane Tablet:\nWelcome, human! This land has long been terrorized by ghosts. Can you save us?", 30,2000);
-
         inventory = new Inventory();
         this.addActor(inventory);
         inventory.setBounds(30,20,100,100);

@@ -63,6 +63,7 @@ public class World extends Stage {
                     Loot pickUp = CollisionManager.isCollidingLoot(player);
                     if (pickUp != null && pickUp.matchingStaff != null){
                         currentStaff = pickUp.matchingStaff;
+                        Wizard.w.currentLevel.removeActor(pickUp);
                     }
                 }
 
@@ -152,6 +153,7 @@ public class World extends Stage {
                 toPopulate.addActor(new Enemy(6,3,1,1.2F));
                 break;
             case 1:
+                Wizard.o.displayText("Beckett:\nHello mortals, welcome to my realm!\nMwahahaha");
                 toPopulate.addActor(new Enemy(3,3,1,1.2F));
                 toPopulate.addActor(new Enemy(4,5,1,1.2F));
                 toPopulate.addActor(new Enemy(2,3,1,1.2F));

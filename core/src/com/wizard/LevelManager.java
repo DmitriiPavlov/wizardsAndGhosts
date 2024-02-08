@@ -21,6 +21,7 @@ public class LevelManager {
         Level outLevel = new Level();
         for (int i = 0; i < lines.length; i++){
             String line = lines[i];
+            line = line.replaceAll("[^\\p{Graph}\n\r\t ]", "");
             if (i == 0){
                 line = line.replaceAll(" ", "");
                 width = bullCrapInt(line.split("x")[0].substring(0,2));
