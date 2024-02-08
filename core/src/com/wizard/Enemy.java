@@ -6,7 +6,6 @@ public class Enemy extends Entity{
     public Enemy(float x, float y, float width, float height){
         //setting default parameters
         super(10,8,"GhostRedesign.png");
-        CollisionManager.collidableEnemies.add(this);
         this.setBounds(x,y,width,height);
     }
     public Enemy(float initHP, float speed, String spriteTextureName) {

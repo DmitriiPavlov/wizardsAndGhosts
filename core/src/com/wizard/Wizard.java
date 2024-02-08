@@ -6,8 +6,8 @@ import com.wizard.UIpackage.Overlay;
 
 public class Wizard extends ApplicationAdapter {
 
-	World w;
-	Overlay o;
+	public static World w;
+	public static Overlay o;
 	
 	@Override
 	public void create () {

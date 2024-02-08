@@ -11,6 +11,8 @@ public class Entity extends Group {
     public float SPEED;
     public float HP;
     public float maxHP;
+
+    public boolean active = true;
     public Entity(float initHP,float speed, String spriteTextureName){
         HP = initHP;
         maxHP = initHP;
@@ -56,7 +58,12 @@ public class Entity extends Group {
         }
     }
     public void getHitbox(Rectangle outRect){
+        if (active){
         outRect.set(this.getX() + this.sprite.getX(),this.getY() + this.sprite.getY(), this.sprite.getHeight(),this.sprite.getWidth());
+        }
+        else{
+            outRect.set(0,0,0,0);
+        }
     }
 
     public void rotate(float degrees){
