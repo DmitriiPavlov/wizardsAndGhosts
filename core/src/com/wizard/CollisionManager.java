@@ -6,9 +6,6 @@ import java.util.ArrayList;
 public class CollisionManager {
     //manages collisions between various objects
     //can let you know if your character is colliding with any rects
-
-    public static ArrayList<Block> collidableBlocks = new ArrayList<>();
-    public static ArrayList<Enemy> collidableEnemies = new ArrayList<>();
     public static Character character;
 
     public static Level currentLevel;
@@ -32,11 +29,25 @@ public class CollisionManager {
     public static Enemy isCollidingEnemy(Entity entity){
         Rectangle entityRect = new Rectangle(); entity.getHitbox(entityRect);
         Rectangle enemyRect = new Rectangle();
-        for (Enemy enemy : collidableEnemies){
+        for (Enemy enemy : currentLevel.collidableEnemies){
             if ((Entity) enemy != entity) {
                 enemy.getHitbox(enemyRect);
                 if (enemyRect.overlaps(entityRect)) {
                     return enemy;
+                }
+            }
+        }
+        return null;
+    }
+
+    public static Loot isCollidingLoot(Entity entity){
+        Rectangle entityRect = new Rectangle(); entity.getHitbox(entityRect);
+        Rectangle lootRect = new Rectangle();
+        for (Loot l : currentLevel.lootList){
+            if ((Entity) l != entity) {
+                l.getHitbox(lootRect);
+                if (lootRect.overlaps(entityRect)) {
+                    return l;
                 }
             }
         }
@@ -48,5 +59,8 @@ public class CollisionManager {
         Rectangle playerRect = new Rectangle(); character.getHitbox(playerRect);
         return actorRect.overlaps(playerRect);
     }
+
+
+
 
 }

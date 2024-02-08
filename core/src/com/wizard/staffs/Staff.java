@@ -1,10 +1,13 @@
 package com.wizard.staffs;
 
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.wizard.Loot;
+
 public abstract class Staff {
-    // in milliseconds (1/1000 of a second)
-    public long timeLastFired;
-    //in fires per second
-    public long fireRate;
+
 
     public abstract void fire(float x, float y, float targetX, float targetY);
+    public abstract boolean canFire();
+    public String itemTexture;
+
 }

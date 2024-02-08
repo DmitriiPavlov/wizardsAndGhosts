@@ -17,6 +17,7 @@ public class BlockManager {
             setNameToNotCollidable(name);
         }
         setNameToCollidable("wall.png");
+        setNameToCollidable("forestRoof.png");
     }
 
     public static void setNameToCollidable(String name){

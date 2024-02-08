@@ -18,7 +18,7 @@ import sun.jvm.hotspot.utilities.BitMap;
 public class Overlay extends Stage {
     private ScreenPrinter textField;
     private Inventory inventory;
-    private BottomText bottomText;
+    public BottomText bottomText;
     private BitmapFont font = new BitmapFont();
     public Overlay(){
         super(new ScreenViewport());

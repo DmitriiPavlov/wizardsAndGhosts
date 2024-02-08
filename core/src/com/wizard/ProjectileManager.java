@@ -1,6 +1,7 @@
 package com.wizard;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class ProjectileManager {
     //manages projectiles and their trajectories
@@ -11,9 +12,14 @@ public class ProjectileManager {
         public float range;
         public float distanceTraveled = 0;
         boolean hitsEnemies;
+        public long timeCreated;
+        public long lifeTime;
 
         public Projectile(String textureName) {
             super(0, 0, textureName);
+            timeCreated = TimeUtils.millis();
+            //i am just making a default lifetime of 15 seconds this can be changed by different projetiles however
+            lifeTime = 3 * 1000;
         }
 
         public void act(float deltaTime) {
@@ -26,6 +32,12 @@ public class ProjectileManager {
                     World.currentLevel.removeActor(this);
                     return;
                 }
+            }
+
+            if (TimeUtils.timeSinceMillis(timeCreated)>= lifeTime){
+                System.out.println(TimeUtils.timeSinceMillis(timeCreated));
+
+                World.currentLevel.removeActor(this);
             }
 
             this.interpolateMotion(deltaTime);
@@ -43,7 +55,7 @@ public class ProjectileManager {
             }
             distanceTraveled += Math.sqrt(dx * dx + dy * dy) * deltaTime;
             if (distanceTraveled > range) {
-                this.getParent().removeActor(this);
+                World.currentLevel.removeActor(this);
                 return;
             }
         }

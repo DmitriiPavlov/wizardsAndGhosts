@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
+import com.wizard.staffs.CandyStaff;
+import com.wizard.staffs.Staff;
 
 import java.util.ArrayList;
 
@@ -17,6 +19,8 @@ public class World extends Stage {
     public static ArrayList<Level> levelList = new ArrayList<>();
     public static int indexLevel = -1;
     public static Character player;
+    public static Staff currentStaff = null;
+    public static ArrayList<Loot> lootList = new ArrayList<>();
     public World(){
         //this is where everything gets initiated, like texture manager and projectile manager
         super(new FitViewport(28,20));
@@ -37,7 +41,7 @@ public class World extends Stage {
 
         loadNextLevel();
 
-
+        this.currentLevel.addActor(new Loot(1,1,"GreenCandyWHitBox.png",new CandyStaff()));
 
         //event listener for a click (projectile fired)
         this.addListener(new InputListener(){
@@ -46,15 +50,26 @@ public class World extends Stage {
 
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                if (button == Input.Buttons.LEFT && TimeUtils.timeSinceMillis(lastTime) > 500){
+                if (button == Input.Buttons.LEFT && currentStaff != null && currentStaff.canFire()){
                     //we want to make a projectile that fires this way
-                    ProjectileManager.createCandyBlast(x - player.centerX(), y - player.centerY(), player.centerX(), player.centerY());
-                    lastTime = TimeUtils.millis();
+                   currentStaff.fire(player.getX(),player.getY(),x-player.getX(), y-player.getY());
                     return true;
                 }
                 return super.touchDown(event, x, y, pointer, button);
             }
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (keycode == Input.Keys.E){
+                    Loot pickUp = CollisionManager.isCollidingLoot(player);
+                    if (pickUp != null && pickUp.matchingStaff != null){
+                        currentStaff = pickUp.matchingStaff;
+                    }
+                }
+
+                return super.keyDown(event, keycode);
+            }
         });
+
 
     }
     public void resize(int width, int height){
@@ -124,7 +139,7 @@ public class World extends Stage {
         CollisionManager.currentLevel = currentLevel;
         this.addActor(currentLevel);
         currentLevel.setZIndex(1);
-        player.setPosition(this.currentLevel.blockArray[0].length/2, this.currentLevel.blockArray.length-1);
+        player.setPosition(this.currentLevel.blockArray[0].length/2, this.currentLevel.blockArray[0].length-2);
     }
 
     //this goes through and adds all the necessary enemies to a level

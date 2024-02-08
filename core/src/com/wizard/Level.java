@@ -5,9 +5,12 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 
+import java.util.ArrayList;
+
 public class Level extends Group {
     public Block[][] blockArray;
-
+    public  ArrayList<Enemy> collidableEnemies = new ArrayList<>();
+    public  ArrayList<Loot> lootList = new ArrayList<>();
     public void initGroup(){
         this.setBounds(0,0,800,800);
         for (int x = 0; x < blockArray.length; x ++){
@@ -23,6 +26,28 @@ public class Level extends Group {
     public boolean inBounds(int x, int y){
         return 0<=x && x<blockArray.length && 0<=y && y<blockArray[0].length;
     }
+
+
+    public void addActor(Enemy e){
+        collidableEnemies.add(e);
+        this.addActor((Actor)e);
+    }
+
+    public void removeActor(Enemy e){
+        collidableEnemies.remove(e);
+        this.removeActor((Actor) e);
+    }
+
+    public void addActor(Loot e){
+        lootList.add(e);
+        this.addActor((Actor)e);
+    }
+
+    public void removeActor(Loot e){
+        lootList.remove(e);
+        this.removeActor((Actor) e);
+    }
+
 
 
 }
