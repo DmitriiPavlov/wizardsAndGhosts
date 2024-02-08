@@ -18,10 +18,8 @@ public class Inventory extends Group {
         Image frameOne = new Image(TextureManager.get("frame.png"));
         Image frameTwo = new Image(TextureManager.get("frame.png"));
 
-
         frameOne.setBounds(0,0,66,66);
         frameTwo.setBounds(77,82,33,33);
-
 
         Label label1 = new Label("Primary Spell",TextureManager.mSkin);
         label1.setBounds(0,-10,66,10);
@@ -55,4 +53,15 @@ public class Inventory extends Group {
         this.addActor(runeTable);
     }
 
+    public void setWeaponOne(String weapon){
+        weaponOne = new Image(TextureManager.get(weapon));
+        weaponOne.setBounds(0,0,66,66);
+        this.addActor(weaponOne);
+    }
+
+    public void setWeaponTwo(String weapon){
+        weaponTwo = new Image(TextureManager.get(weapon));
+        weaponTwo.setBounds(77,82,33,33);
+        this.addActor(weaponTwo);
+    }
 }

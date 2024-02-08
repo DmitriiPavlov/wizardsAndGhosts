@@ -36,4 +36,12 @@ public class Enemy extends Entity{
 
         }
     }
+
+    public void updateHP(float newHP){
+        super.updateHP(newHP);
+        if (this.HP == 0){
+            ProjectileManager.createScaredGhost(this.getX(), this.getY());
+            Wizard.w.currentLevel.removeActor(this);
+        }
+    }
 }

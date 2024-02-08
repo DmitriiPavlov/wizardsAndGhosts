@@ -1,5 +1,6 @@
 package com.wizard;
 
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 
@@ -35,8 +36,6 @@ public class ProjectileManager {
             }
 
             if (TimeUtils.timeSinceMillis(timeCreated)>= lifeTime){
-                System.out.println(TimeUtils.timeSinceMillis(timeCreated));
-
                 World.currentLevel.removeActor(this);
             }
 
@@ -126,7 +125,7 @@ public class ProjectileManager {
                 out.hitsEnemies = true;
                 World.currentLevel.addActor(out);
             } else {
-                out = new Projectile("GreenCandyWHitBox.png");
+                out = new Projectile("YellowCandyWHitBox.png");
                 out.range = 4.0F;
                 out.dx = dx + (float) ((int) (Math.random() * 4.0 - 2.0)) * speedRatio;
                 out.dy = dy + (float) ((int) (Math.random() * 4.0 - 2.0)) * speedRatio;
@@ -138,5 +137,17 @@ public class ProjectileManager {
             }
         }
 
+    }
+    public static void createScaredGhost(float x, float y){
+        int dx = MathUtils.random(1,100)-50;
+        int dy = MathUtils.random(1,100)-50;
+        float currSpeed = (float) Math.sqrt((double) (dx * dx + dy * dy));
+        float speedRatio = 10.0F / currSpeed;
+        Projectile out = new Projectile("WhiteGhost.png");
+        out.range = 10.0F;
+        out.dx = dx * speedRatio;
+        out.dy = dy * speedRatio;
+        out.setBounds(x, y, 1.0F, 1.0F);
+        World.currentLevel.addActor(out);
     }
 }

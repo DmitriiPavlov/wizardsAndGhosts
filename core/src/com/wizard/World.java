@@ -63,7 +63,9 @@ public class World extends Stage {
                     Loot pickUp = CollisionManager.isCollidingLoot(player);
                     if (pickUp != null && pickUp.matchingStaff != null){
                         currentStaff = pickUp.matchingStaff;
+                        Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
                         Wizard.w.currentLevel.removeActor(pickUp);
+
                     }
                 }
 

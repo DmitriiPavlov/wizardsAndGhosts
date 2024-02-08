@@ -30,10 +30,6 @@ public class LevelManager {
                 outLevel.blockArray = new Block[width][height];
             }
             else if (i == 1){
-                char[] lineArray = line.toCharArray();
-                for (char c : lineArray){
-                    System.out.println(c);
-                }
                 blockAmount = bullCrapInt(line);
             }
 

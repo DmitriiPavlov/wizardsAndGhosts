@@ -15,9 +15,14 @@ import sun.jvm.hotspot.utilities.BitMap;
 
 //I AM JUST GOING TO ASSUME THIS GETS LOADED IN AFTER WORLD DOES
 
+
+//If you want to display text at the top in white, and have it print
+//do Wizard.o.displayText("BLA BLAH ALBLAH");
+// if you want to change the blue text, which doesnt print, you do
+// Wizard.o.bottomText.setText("Blah blah blah blah");
 public class Overlay extends Stage {
     private ScreenPrinter textField;
-    private Inventory inventory;
+    public Inventory inventory;
     public BottomText bottomText;
     private BitmapFont font = new BitmapFont();
     public Overlay(){
@@ -37,7 +42,6 @@ public class Overlay extends Stage {
     public void displayText(String newText){
         this.textField.printText(newText, Constant.textSpeed);
     }
-
 
     public void resize(int width, int height){
         this.getViewport().update(width, height,true);

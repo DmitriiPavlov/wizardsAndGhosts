@@ -5,7 +5,9 @@ import com.wizard.ProjectileManager;
 
 public class CandyStaff extends Staff {
     private long timeLastFired;
-    public String itemTexture = "GreenCandyWHitBox.png";
+    public CandyStaff(){
+        super.itemTexture = "GreenCandyWHitBox.png";
+    }
     public void fire(float x, float y, float dx, float dy){
         timeLastFired = TimeUtils.millis();
         ProjectileManager.createCandyBlast(dx,dy,x,y);
@@ -14,4 +16,8 @@ public class CandyStaff extends Staff {
         return (TimeUtils.timeSinceMillis(timeLastFired) > 100);
     }
 
+    public String getItemTexture(){
+        System.out.println(itemTexture);
+        return itemTexture;
+    }
 }
