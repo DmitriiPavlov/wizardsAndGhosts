@@ -22,17 +22,22 @@ public class LevelManager {
         for (int i = 0; i < lines.length; i++){
             String line = lines[i];
             if (i == 0){
-                width = Integer.parseInt(line.split("x")[0]);
-                height = Integer.parseInt(line.split("x")[1]);
+                line = line.replaceAll(" ", "");
+                width = bullCrapInt(line.split("x")[0].substring(0,2));
+                height = bullCrapInt(line.split("x")[1].substring(0,2));
 
                 outLevel.blockArray = new Block[width][height];
             }
             else if (i == 1){
-                blockAmount = Integer.parseInt(line);
+                char[] lineArray = line.toCharArray();
+                for (char c : lineArray){
+                    System.out.println(c);
+                }
+                blockAmount = bullCrapInt(line);
             }
 
             else if ((i > 1) && (i < 2+blockAmount)){
-                int key = Integer.parseInt(line.split(" ")[1]);
+                int key = bullCrapInt(line.split(" ")[1]);
                 String decoderName = line.split(" ")[0];
                 decoderMap.put(key,decoderName);
             }
@@ -51,5 +56,19 @@ public class LevelManager {
         //this is so all the blocks become sub actors of the group, and are allowed their own coordinate system
         outLevel.initGroup();
         return outLevel;
+    }
+
+    public static int bullCrapInt(String name){
+        char[] lineArray = name.toCharArray();
+        String out = "";
+        for (char c : lineArray){
+            try{
+                out += Integer.parseInt(String.valueOf(c));
+            }
+            catch (Exception e){
+                continue;
+            }
+        }
+        return Integer.parseInt(out);
     }
 }
