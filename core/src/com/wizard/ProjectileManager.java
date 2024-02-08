@@ -147,7 +147,7 @@ public class ProjectileManager {
         out.range = 10.0F;
         out.dx = dx * speedRatio;
         out.dy = dy * speedRatio;
-        out.setBounds(x, y, 1.0F, 1.0F);
+        out.setBounds(x, y, 1.0F, 1.2F);
         World.currentLevel.addActor(out);
     }
 }
