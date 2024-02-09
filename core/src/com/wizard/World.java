@@ -183,7 +183,7 @@ public class World extends Stage {
         CollisionManager.currentLevel = currentLevel;
         this.addActor(currentLevel);
         currentLevel.setZIndex(1);
-        player.setPosition(this.currentLevel.blockArray[0].length/2, 1);
+        player.setPosition(this.currentLevel.blockArray.length/2, 1);
 
     }
 
@@ -198,7 +198,7 @@ public class World extends Stage {
         CollisionManager.currentLevel = currentLevel;
         this.addActor(currentLevel);
         currentLevel.setZIndex(1);
-        player.setPosition(this.currentLevel.blockArray[0].length/2, this.currentLevel.blockArray[0].length-2);
+        player.setPosition(this.currentLevel.blockArray.length/2, this.currentLevel.blockArray[0].length-2);
     }
     public void loadPreviousLevel(){
         if (indexLevel == 0) return;
@@ -212,7 +212,7 @@ public class World extends Stage {
         CollisionManager.currentLevel = currentLevel;
         this.addActor(currentLevel);
         currentLevel.setZIndex(1);
-        player.setPosition(this.currentLevel.blockArray[0].length/2, this.currentLevel.blockArray[0].length-2);
+        player.setPosition(this.currentLevel.blockArray.length/2, this.currentLevel.blockArray[0].length-2);
     }
 
     //this goes through and adds all the necessary enemies to a level
@@ -239,6 +239,20 @@ public class World extends Stage {
                 toPopulate.addActor(new EnemyShooter(1,11,1,1.2f,new GhostStaff()));
                 toPopulate.addActor(new EnemyShooter(1,13,1,1.2f,new GhostStaff()));
                 toPopulate.addActor(new EnemyShooter(1,15,2,2.4f,new GhostStaff()));
+                break;
+            case 4:
+                toPopulate.addActor(new EnemyShooter(1,1,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,3,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,7,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,9,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(2,1,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(2,3,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(2,7,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(2,9,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,11,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,13,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,15,2,2.4f,new GhostStaff()));
+                break;
         }
     }
 }

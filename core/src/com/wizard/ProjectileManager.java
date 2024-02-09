@@ -123,12 +123,12 @@ public class ProjectileManager {
 
     public static void createLollipop(float dx, float dy, float x, float y) {
         float currSpeed = (float) Math.sqrt((double) (dx * dx + dy * dy));
-        float speedRatio = 10.0F / currSpeed;
+        float speedRatio = 15.0F / currSpeed;
         Projectile out = new Projectile("LolipopWHitBox.png");
         out.range = 10.0F;
         out.dx = dx * speedRatio;
         out.dy = dy * speedRatio;
-        out.setBounds(x, y, 1.0F, 2.0F);
+        out.setBounds(x, y, 0.75F, 1.5F);
         out.setOrigin(out.getWidth() / 2.0F, out.getHeight() / 2.0F);
         out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2(0.0F, 1.0F)));
         out.hitsEnemies = true;

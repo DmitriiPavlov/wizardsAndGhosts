@@ -1,0 +1,30 @@
+10x20
+18
+empty.png 3
+spawn.png 10
+forestWall2.png 14
+emptyDebug.png 2
+ground.png 7
+ground(1).png 1
+groundWall.png 5
+forestFloorShad.png 6
+exit.png 9
+ground(3).png 13
+forestFloor.png 0
+realWall3d.png 15
+forestWall1.png 17
+wall.png 8
+forestRoof.png 12
+ground(2).png 16
+badlogic.jpg 11
+3dwallshadow.png 4
+12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 
+12 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 12 
+12 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 12 
+12 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 12 
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+12 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 12 
+12 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 12 
+12 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 12 
+12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 12 
