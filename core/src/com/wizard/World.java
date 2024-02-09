@@ -8,10 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
-import com.wizard.enemies.EnemyShooter;
-import com.wizard.staffs.CandyStaff;
-import com.wizard.staffs.GhostStaff;
-import com.wizard.staffs.Staff;
+import com.wizard.staffs.*;
 
 import java.util.ArrayList;
 
@@ -22,6 +19,10 @@ public class World extends Stage {
     public static int indexLevel = -1;
     public static Character player;
     public static Staff currentStaff = null;
+
+    public static Staff PrimaryStaff = null;
+
+    public static Staff SecondaryStaff = null;
     public static ArrayList<Loot> lootList = new ArrayList<>();
     public World(){
         //this is where everything gets initiated, like texture manager and projectile manager
@@ -43,7 +44,13 @@ public class World extends Stage {
 
         loadNextLevel();
 
-        this.currentLevel.addActor(new Loot(1,1,"GreenCandyWHitBox.png",new CandyStaff()));
+        this.currentLevel.addActor(new Loot(1,1,"CandyBlastScroll.png",new CandyStaff()));
+
+        this.currentLevel.addActor(new Loot(1,3,"MintScroll.png",new MintStaff()));
+
+        this.currentLevel.addActor(new Loot(1,5,"LolipopWHitBox.png",new LollipopStaff()));
+
+        this.currentLevel.addActor(new Loot(1,7,"ChocBarWHitBox.png",new ChocBarStaff()));
 
         //event listener for a click (projectile fired)
         this.addListener(new InputListener(){
@@ -54,7 +61,7 @@ public class World extends Stage {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (button == Input.Buttons.LEFT && currentStaff != null && currentStaff.canFire()){
                     //we want to make a projectile that fires this way
-                   currentStaff.fire(player.getX(),player.getY(),x, y);
+                   currentStaff.fire(player.getX(),player.getY(),x-player.getX(), y-player.getY());
                     return true;
                 }
                 return super.touchDown(event, x, y, pointer, button);
@@ -64,19 +71,53 @@ public class World extends Stage {
                 if (keycode == Input.Keys.E){
                     Loot pickUp = CollisionManager.isCollidingLoot(player);
                     if (pickUp != null && pickUp.matchingStaff != null){
-                        currentStaff = pickUp.matchingStaff;
-                        Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
-                        Wizard.w.currentLevel.removeActor(pickUp);
-                        Wizard.o.bottomText.setText("");
-                        return true;
+                        if (PrimaryStaff == null) {
+                            currentStaff = pickUp.matchingStaff;
+                            PrimaryStaff = pickUp.matchingStaff;
+                            Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
+                            Wizard.w.currentLevel.removeActor(pickUp);
+                        }
+                        else if (SecondaryStaff == null){
+                            SecondaryStaff = PrimaryStaff;
+                            currentStaff = pickUp.matchingStaff;
+                            PrimaryStaff = pickUp.matchingStaff;
+                            Wizard.o.inventory.setWeaponOne(PrimaryStaff.itemTexture);
+                            Wizard.o.inventory.setWeaponTwo(SecondaryStaff.itemTexture);
+                            Wizard.w.currentLevel.removeActor(pickUp);
+                        }
+                        else{
+                            Staff temp = Staff.getStaffType(PrimaryStaff);
+                            World.currentLevel.addActor(new Loot(player.getX(),player.getY(),temp.getItemTexture(),temp));
+                            currentStaff = pickUp.matchingStaff;
+                            PrimaryStaff = pickUp.matchingStaff;
+                            Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
+                            Wizard.w.currentLevel.removeActor(pickUp);
+                        }
 
                     }
                 }
 
-
-
                 return super.keyDown(event, keycode);
             }
+            /*
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (PrimaryStaff != null && SecondaryStaff != null) {
+
+                    Staff temp = PrimaryStaff;
+                    PrimaryStaff = SecondaryStaff;
+                    SecondaryStaff = temp;
+                    currentStaff = PrimaryStaff;
+                    Wizard.o.inventory.setWeaponOne(PrimaryStaff.itemTexture);
+                    Wizard.o.inventory.setWeaponTwo(SecondaryStaff.itemTexture);
+                    return true;
+
+                }
+                return false;
+            }
+
+             */
+
         });
 
 
@@ -106,12 +147,6 @@ public class World extends Stage {
             loadPreviousLevel();
         }
 
-
-        if (player.HP == 0){
-            loadPreviousLevel(0);
-            player.updateHP(20);
-            player.setY(3);
-        }
     }
 
     public void loadNextLevel(){
@@ -142,19 +177,6 @@ public class World extends Stage {
 
     }
 
-    public void loadPreviousLevel(int levelIndex){
-        indexLevel = levelIndex;
-        Level newLevel = levelList.get(levelIndex);
-        if (newLevel == null) return;
-
-        if (currentLevel != null) currentLevel.remove();
-        currentLevel = newLevel;
-        currentLevel.setPosition(0,0);
-        CollisionManager.currentLevel = currentLevel;
-        this.addActor(currentLevel);
-        currentLevel.setZIndex(1);
-        player.setPosition(this.currentLevel.blockArray[0].length/2, this.currentLevel.blockArray[0].length-2);
-    }
     public void loadPreviousLevel(){
         if (indexLevel == 0) return;
         indexLevel-=1;
@@ -186,14 +208,6 @@ public class World extends Stage {
                 toPopulate.addActor(new Enemy(2,3,1,1.2F));
                 toPopulate.addActor(new Enemy(6,3,1,1.2F));
                 break;
-            case 2:
-                toPopulate.addActor(new EnemyShooter(1,1,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,3,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,7,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,9,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,11,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,13,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,15,2,2.4f,new GhostStaff()));
         }
     }
 }

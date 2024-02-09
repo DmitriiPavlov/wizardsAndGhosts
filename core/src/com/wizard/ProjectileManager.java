@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
+import com.wizard.staffs.Staff;
 
 public class ProjectileManager {
     //manages projectiles and their trajectories
@@ -13,10 +14,13 @@ public class ProjectileManager {
         public float dx, dy, height, width;
         public float range;
         public float distanceTraveled = 0;
-        public boolean hitsPlayer = false;
         boolean hitsEnemies;
         public long timeCreated;
         public long lifeTime;
+
+        public int damage;
+
+        public String proName;// this will be used to call back to the staff class it originated from
 
         public Projectile(String textureName) {
             super(0, 0, textureName);
@@ -31,19 +35,8 @@ public class ProjectileManager {
 
                 if (collided != null) {
                     //here I would subtract the hp
-                    collided.updateHP(collided.HP - 1);
-                    World.currentLevel.removeActor(this);
-                    return;
-                }
-            }
-
-            if (hitsPlayer) {
-                boolean hit = CollisionManager.isCollidingPlayer(this);
-
-                if (hit) {
-                    //here I would subtract the hp
-                    Wizard.w.player.updateHP(Wizard.w.player.HP - 1);
-                    System.out.println("here");
+                    collided.updateHP(collided.HP - damage);
+                    Staff.ability(proName, dx, dy, this.getX(), this.getY());
                     World.currentLevel.removeActor(this);
                     return;
                 }
@@ -51,7 +44,6 @@ public class ProjectileManager {
 
             if (TimeUtils.timeSinceMillis(timeCreated)>= lifeTime){
                 World.currentLevel.removeActor(this);
-                return;
             }
 
             this.interpolateMotion(deltaTime);
@@ -85,8 +77,11 @@ public class ProjectileManager {
         out.range = 5;
         out.dx = dx * speedRatio;
         out.dy = dy * speedRatio;
-        out.setBounds(x, y, 0.5F, 0.5F);
+        out.setBounds(x, y, 0.8F, 0.8F);
         out.hitsEnemies = true;
+
+        out.damage = 2;
+        out.proName = "Mint";
 
         World.currentLevel.addActor(out);
     }
@@ -94,20 +89,22 @@ public class ProjectileManager {
     public static void createTicTac(float dx, float dy, float x, float y) {
         //mint should have a speed of like 20
         float currSpeed = (float) Math.sqrt(dx * dx + dy * dy);
-        float speedRatio = 15 / currSpeed;
+        float speedRatio = 10 / currSpeed;
 
 
         Projectile out = new Projectile("tictac.png");
-        out.range = 5;
+        out.range = 3;
         out.dx = dx * speedRatio;
         out.dy = dy * speedRatio;
         out.setBounds(x, y, 0.3F, 0.3F);
         out.setOrigin(out.getWidth() / 2, out.getHeight() / 2);
         out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2(1, 0)));
-        out.hitsEnemies = false;
-        out.hitsPlayer = true;
+        out.hitsEnemies = true;
 
-        Wizard.w.currentLevel.addActor(out);
+        out.damage = 3;
+        out.proName = "TicTac";
+
+        World.currentLevel.addActor(out);
     }
 
     public static void createLollipop(float dx, float dy, float x, float y) {
@@ -119,8 +116,12 @@ public class ProjectileManager {
         out.dy = dy * speedRatio;
         out.setBounds(x, y, 1.0F, 2.0F);
         out.setOrigin(out.getWidth() / 2.0F, out.getHeight() / 2.0F);
-        out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2(1.0F, 0.0F)));
+        out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2(0.0F, 1.0F)));
         out.hitsEnemies = true;
+
+        out.damage = 8;
+        out.proName = "Lollipop";
+
         World.currentLevel.addActor(out);
     }
 
@@ -128,32 +129,73 @@ public class ProjectileManager {
         float currSpeed = (float) Math.sqrt((double) (dx * dx + dy * dy));
         float speedRatio = 5.0F / currSpeed;
 
-        for (int i = 0; i < 12; ++i) {
+        for (int i = -6; i < 6; ++i) {
             Projectile out;
             if (Math.random() < 0.5) {
-                out = new Projectile("GreenCandyWHitBox.png");
-                out.range = 4.0F;
-                out.dx = dx + (float) ((int) (Math.random() * 4.0 - 2.0)) * speedRatio;
-                out.dy = dy + (float) ((int) (Math.random() * 4.0 - 2.0)) * speedRatio;
-                out.setBounds(x, y, 1.0F, 0.7F);
-                out.setOrigin(out.getWidth() / 2.0F, out.getHeight() / 2.0F);
-                out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2((float) ((int) (Math.random() * 10.0 - 5.0)), (float) ((int) (Math.random() * 10.0 - 5.0)))));
-                out.hitsEnemies = true;
-                World.currentLevel.addActor(out);
-            } else {
-                out = new Projectile("YellowCandyWHitBox.png");
-                out.range = 4.0F;
-                out.dx = dx + (float) ((int) (Math.random() * 4.0 - 2.0)) * speedRatio;
-                out.dy = dy + (float) ((int) (Math.random() * 4.0 - 2.0)) * speedRatio;
-                out.setBounds(x, y, 1.0F, 0.7F);
-                out.setOrigin(out.getWidth() / 2.0F, out.getHeight() / 2.0F);
-                out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2((float) ((int) (Math.random() * 10.0 - 5.0)), (float) ((int) (Math.random() * 10.0 - 5.0)))));
-                out.hitsEnemies = true;
-                World.currentLevel.addActor(out);
-            }
+                out = new Projectile("GreenCandyWHitBox.png");}
+            else {
+                out = new Projectile("YellowCandyWHitBox.png");}
+            out.range = 4.0F;
+            float multi = (float) ((int) (Math.random() * 4.0 - 2));
+            out.dx = dx + (multi) * speedRatio;
+            out.dy = dy + (multi) * speedRatio;
+            out.setBounds(x, y, 1.0F, 0.7F);
+            out.setOrigin(out.getWidth() / 2.0F, out.getHeight() / 2.0F);
+            out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2((float) ((int) (Math.random() * 10.0 - 5.0)), (float) ((int) (Math.random() * 10.0 - 5.0)))));
+            out.hitsEnemies = true;
+
+            out.damage = 1;
+            out.proName = "Candy";
+
+            World.currentLevel.addActor(out);
+
         }
+    }
+
+    public static void createChocBar(float dx, float dy, float x, float y) {
+        float currSpeed = (float) Math.sqrt((double) (dx * dx + dy * dy));
+        float speedRatio = 2.0F / currSpeed;
+        Projectile out = new Projectile("ChocBarWHitBox.png");
+        out.range = 10.0F;
+        out.dx = dx * speedRatio;
+        out.dy = dy * speedRatio;
+        out.setBounds(x, y, 1.3F, 1.7F);
+        out.setOrigin(out.getWidth() / 2.0F, out.getHeight() / 2.0F);
+        out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2(0.0F, 1.0F)));
+        out.hitsEnemies = true;
+
+        out.damage = 5;
+        out.proName = "ChocBar";
+
+        World.currentLevel.addActor(out);
+
 
     }
+
+    public static void createChocChunk(float dx, float dy, float x, float y) {
+        float currSpeed = (float) Math.sqrt((double) (dx * dx + dy * dy));
+        float speedRatio = 2.0F / currSpeed;
+
+        for (double i = 0; i <= 6.283185307; i = i + 0.5235987756) {
+            Projectile out = new Projectile("ChocChunkWHitBox.png");
+            out.range = 6.0F;
+            out.dx = (float)(Math.cos(i)) * speedRatio;//out.dx = (float)(Math.cos(i)) * speedRatio;
+            out.dy = (float)(Math.sin(i)) * speedRatio;
+            System.out.println("i = " + i + "cos of i = " + Math.cos(i));
+            out.setBounds(x, y, 0.5F, 0.7F);
+            out.setOrigin(out.getWidth() / 2.0F, out.getHeight() / 2.0F);
+            out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2(0.0F, 1.0F)));
+            out.hitsEnemies = true;
+
+            out.damage = 2;
+            out.proName = "ChocChunk";
+
+            World.currentLevel.addActor(out);
+        }
+    }
+
+
+
     public static void createScaredGhost(float x, float y){
         int dx = MathUtils.random(1,100)-50;
         int dy = MathUtils.random(1,100)-50;
@@ -169,6 +211,10 @@ public class ProjectileManager {
         out.dx = dx * speedRatio;
         out.dy = dy * speedRatio;
         out.setBounds(x, y, 1.0F, 1.2F);
+
+        out.damage = 1;
+        out.proName = "ScaredGhost";
+
         World.currentLevel.addActor(out);
     }
 }
