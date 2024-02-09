@@ -8,8 +8,10 @@ public class CandyStaff extends Staff {
     public CandyStaff(){
         super.itemTexture = "GreenCandyWHitBox.png";
     }
-    public void fire(float x, float y, float dx, float dy){
+    public void fire(float x, float y, float targetX, float targetY){
         timeLastFired = TimeUtils.millis();
+        float dx = targetX - x;
+        float dy = targetY - y;
         ProjectileManager.createCandyBlast(dx,dy,x,y);
     }
     public boolean canFire(){

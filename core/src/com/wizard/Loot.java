@@ -21,8 +21,6 @@ public class Loot extends Entity{
         super.act(deltaTime);
         if (CollisionManager.isCollidingPlayer(this)) {
             Wizard.o.bottomText.setText("Press [E] to pick up loot.");
-        } else {
-            Wizard.o.bottomText.setText("");
         }
 
     }

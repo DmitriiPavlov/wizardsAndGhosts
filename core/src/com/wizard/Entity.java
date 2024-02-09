@@ -18,8 +18,8 @@ public class Entity extends Group {
         maxHP = initHP;
         SPEED = speed;
         sprite = new Image(TextureManager.get(spriteTextureName));
-        redHP = new Image(TextureManager.get("GREENHP.png"));
-        greenHP = new Image(TextureManager.get("REDHP.png"));
+        redHP = new Image(TextureManager.get("REDHP.png"));
+        greenHP = new Image(TextureManager.get("GREENHP.png"));
 
         this.addActor(sprite);
         if (maxHP > 0) {

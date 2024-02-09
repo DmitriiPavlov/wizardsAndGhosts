@@ -1,8 +1,10 @@
 package com.wizard;
 
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class Enemy extends Entity{
+    public long lastAttack;
     public Enemy(float x, float y, float width, float height){
         //setting default parameters
         super(10,8,"GhostRedesign.png");
@@ -16,6 +18,12 @@ public class Enemy extends Entity{
         Vector2 directionVector = new Vector2(CollisionManager.character.getX() - this.getX(), CollisionManager.character.getY() - this.getY());
         directionVector.nor();
         interpolateMotion(directionVector.x * deltaTime,directionVector.y * deltaTime);
+
+        //code that checks if the ghost should hit the player
+        if (CollisionManager.isCollidingPlayer(this) && canAttack()){
+            Wizard.w.player.updateHP(Wizard.w.player.HP-1);
+            lastAttack = TimeUtils.millis();
+        }
     }
 
     //SO ENEMIES CAN COLLIDE WITH EACH OTHER AND DONT BUNCH UP
@@ -43,5 +51,9 @@ public class Enemy extends Entity{
             ProjectileManager.createScaredGhost(this.getX(), this.getY());
             Wizard.w.currentLevel.removeActor(this);
         }
+    }
+
+    public boolean canAttack(){
+        return TimeUtils.timeSinceMillis(lastAttack) > 100;
     }
 }

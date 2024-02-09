@@ -13,6 +13,8 @@ public class Wizard extends ApplicationAdapter {
 	public void create () {
 		w = new World();
 		o = new Overlay();
+		o.bottomText.setText("Use [WASD] to move and click to shoot!");
+		o.displayText("A mysterious feeling tells you to pick up that candy...");
 	}
 
 	@Override

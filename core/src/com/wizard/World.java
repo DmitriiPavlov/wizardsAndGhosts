@@ -8,7 +8,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
+import com.wizard.enemies.EnemyShooter;
 import com.wizard.staffs.CandyStaff;
+import com.wizard.staffs.GhostStaff;
 import com.wizard.staffs.Staff;
 
 import java.util.ArrayList;
@@ -52,7 +54,7 @@ public class World extends Stage {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (button == Input.Buttons.LEFT && currentStaff != null && currentStaff.canFire()){
                     //we want to make a projectile that fires this way
-                   currentStaff.fire(player.getX(),player.getY(),x-player.getX(), y-player.getY());
+                   currentStaff.fire(player.getX(),player.getY(),x, y);
                     return true;
                 }
                 return super.touchDown(event, x, y, pointer, button);
@@ -65,9 +67,13 @@ public class World extends Stage {
                         currentStaff = pickUp.matchingStaff;
                         Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
                         Wizard.w.currentLevel.removeActor(pickUp);
+                        Wizard.o.bottomText.setText("");
+                        return true;
 
                     }
                 }
+
+
 
                 return super.keyDown(event, keycode);
             }
@@ -100,6 +106,12 @@ public class World extends Stage {
             loadPreviousLevel();
         }
 
+
+        if (player.HP == 0){
+            loadPreviousLevel(0);
+            player.updateHP(20);
+            player.setY(3);
+        }
     }
 
     public void loadNextLevel(){
@@ -130,6 +142,19 @@ public class World extends Stage {
 
     }
 
+    public void loadPreviousLevel(int levelIndex){
+        indexLevel = levelIndex;
+        Level newLevel = levelList.get(levelIndex);
+        if (newLevel == null) return;
+
+        if (currentLevel != null) currentLevel.remove();
+        currentLevel = newLevel;
+        currentLevel.setPosition(0,0);
+        CollisionManager.currentLevel = currentLevel;
+        this.addActor(currentLevel);
+        currentLevel.setZIndex(1);
+        player.setPosition(this.currentLevel.blockArray[0].length/2, this.currentLevel.blockArray[0].length-2);
+    }
     public void loadPreviousLevel(){
         if (indexLevel == 0) return;
         indexLevel-=1;
@@ -161,6 +186,14 @@ public class World extends Stage {
                 toPopulate.addActor(new Enemy(2,3,1,1.2F));
                 toPopulate.addActor(new Enemy(6,3,1,1.2F));
                 break;
+            case 2:
+                toPopulate.addActor(new EnemyShooter(1,1,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,3,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,7,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,9,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,11,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,13,1,1.2f,new GhostStaff()));
+                toPopulate.addActor(new EnemyShooter(1,15,2,2.4f,new GhostStaff()));
         }
     }
 }

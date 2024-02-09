@@ -13,6 +13,7 @@ public class ProjectileManager {
         public float dx, dy, height, width;
         public float range;
         public float distanceTraveled = 0;
+        public boolean hitsPlayer = false;
         boolean hitsEnemies;
         public long timeCreated;
         public long lifeTime;
@@ -36,8 +37,21 @@ public class ProjectileManager {
                 }
             }
 
+            if (hitsPlayer) {
+                boolean hit = CollisionManager.isCollidingPlayer(this);
+
+                if (hit) {
+                    //here I would subtract the hp
+                    Wizard.w.player.updateHP(Wizard.w.player.HP - 1);
+                    System.out.println("here");
+                    World.currentLevel.removeActor(this);
+                    return;
+                }
+            }
+
             if (TimeUtils.timeSinceMillis(timeCreated)>= lifeTime){
                 World.currentLevel.removeActor(this);
+                return;
             }
 
             this.interpolateMotion(deltaTime);
@@ -80,19 +94,20 @@ public class ProjectileManager {
     public static void createTicTac(float dx, float dy, float x, float y) {
         //mint should have a speed of like 20
         float currSpeed = (float) Math.sqrt(dx * dx + dy * dy);
-        float speedRatio = 10 / currSpeed;
+        float speedRatio = 15 / currSpeed;
 
 
         Projectile out = new Projectile("tictac.png");
-        out.range = 3;
+        out.range = 5;
         out.dx = dx * speedRatio;
         out.dy = dy * speedRatio;
         out.setBounds(x, y, 0.3F, 0.3F);
         out.setOrigin(out.getWidth() / 2, out.getHeight() / 2);
         out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2(1, 0)));
-        out.hitsEnemies = true;
+        out.hitsEnemies = false;
+        out.hitsPlayer = true;
 
-        World.currentLevel.addActor(out);
+        Wizard.w.currentLevel.addActor(out);
     }
 
     public static void createLollipop(float dx, float dy, float x, float y) {
