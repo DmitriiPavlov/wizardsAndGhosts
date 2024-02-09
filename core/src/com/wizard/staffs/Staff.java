@@ -11,7 +11,7 @@ public abstract class Staff {
     public abstract boolean canFire();
     public String itemTexture;
 
-    public static void ability(String name, float dx, float dy, float x, float y){ // Used to allow actions after contact with varrious projectile (couldent figure out Overide)
+    public static void ability(String name, float dx, float dy, float x, float y){
         if (name.equals("ChocBar"))
         {
             ProjectileManager.createChocChunk(dx,dy,x,y);
@@ -22,7 +22,7 @@ public abstract class Staff {
         return "badlogic.jpg";
     }
 
-    public static Staff getStaffType(Staff staff){  // used to determain witch scroll to drop on the ground when new item pickup
+    public static Staff getStaffType(Staff staff){
 
 
         if (staff.getItemTexture().equals("MintScroll.png")) {

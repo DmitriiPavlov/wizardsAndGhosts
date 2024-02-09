@@ -8,10 +8,8 @@ public class ChocBarStaff extends Staff {
     public ChocBarStaff(){
         super.itemTexture = "ChocBarWHitBox.png";
     }
-    public void fire(float x, float y, float targetX, float targetY){
+    public void fire(float x, float y, float dx, float dy){
         timeLastFired = TimeUtils.millis();
-        float dx = targetX - x;
-        float dy = targetY - y;
         ProjectileManager.createChocBar(dx,dy,x,y);
     }
     public boolean canFire(){
