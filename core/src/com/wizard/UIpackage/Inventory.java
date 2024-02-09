@@ -56,15 +56,23 @@ public class Inventory extends Group {
 
     public void setWeaponOne(String weapon){
         Wizard.o.inventory.removeActor(weaponOne);//Fixes visual bug (Honestly impressed i figured out how to do this lol)
+
         weaponOne = new Image(TextureManager.get(weapon));
-        weaponOne.setBounds(0,0,66,66);
+        //we want to make sure aspect ratio is preserved here
+        float scalingFactor = 64.0f/Math.max(weaponOne.getHeight(), weaponOne.getWidth());
+        weaponOne.setBounds(0,0,scalingFactor*weaponOne.getWidth(), scalingFactor*weaponOne.getHeight());
+        weaponOne.setPosition((64.0f - weaponOne.getWidth())/2.0f,(64.0f - weaponOne.getHeight())/2.0f);
         this.addActor(weaponOne);
     }
 
     public void setWeaponTwo(String weapon){
-        Wizard.o.inventory.removeActor(weaponTwo);//Fixes visual bug
-        weaponTwo = new Image(TextureManager.get(weapon));
-        weaponTwo.setBounds(77,82,33,33);
+        Wizard.o.inventory.removeActor(weaponTwo);//Fixes visual bug (Honestly impressed i figured out how to do this lol)
+
+        weaponTwo= new Image(TextureManager.get(weapon));
+        //we want to make sure aspect ratio is preserved here
+        float scalingFactor = 33.0f/Math.max(weaponTwo.getHeight(), weaponTwo.getWidth());
+        weaponTwo.setBounds(0,0,scalingFactor*weaponTwo.getWidth(), scalingFactor*weaponTwo.getHeight());
+        weaponTwo.setPosition(77+(33.0f - weaponTwo.getWidth())/2.0f,82+(33.0f - weaponTwo.getHeight())/2.0f);
         this.addActor(weaponTwo);
     }
 }

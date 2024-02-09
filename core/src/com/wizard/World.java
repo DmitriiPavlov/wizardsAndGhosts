@@ -133,6 +133,12 @@ public class World extends Stage {
 
     @Override
     public void act() {
+        if (currentStaff == null){
+            Wizard.o.bottomText.setText("Use [WASD] to move.");
+        }
+        else {
+            Wizard.o.bottomText.setText("Use [Q] to swap spells,\n and click to cast.");
+        }
         super.act();
         //this line is to see if the player goes out of bounds above
         if (player.getY() > currentLevel.blockArray[0].length){
@@ -149,6 +155,8 @@ public class World extends Stage {
             player.updateHP(20);
             player.setY(3);
         }
+
+
     }
 
     public void loadNextLevel(){

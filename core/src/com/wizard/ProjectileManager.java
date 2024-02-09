@@ -9,6 +9,7 @@ import com.wizard.staffs.Staff;
 public class ProjectileManager {
     //manages projectiles and their trajectories
     public static World stage;
+    public static long projectileImmunityWindow = 100;
 
     public static class Projectile extends Entity {
         public float dx, dy, height, width;
@@ -45,7 +46,6 @@ public class ProjectileManager {
 
             if (hitsPlayer) {
                 boolean hit = CollisionManager.isCollidingPlayer(this);
-
                 if (hit) {
                     //here I would subtract the hp
                     Wizard.w.player.updateHP(Wizard.w.player.HP - 1);
@@ -68,7 +68,7 @@ public class ProjectileManager {
             int interpolationConstant = (int) (Math.sqrt(dx * dx + dy * dy));
             for (int i = 0; i < interpolationConstant; i++) {
                 this.moveBy(deltaTime * dx / interpolationConstant, deltaTime * dy / interpolationConstant);
-                if (CollisionManager.isHittingBlock(this)) {
+                if (CollisionManager.isHittingBlock(this) && TimeUtils.timeSinceMillis(timeCreated) > projectileImmunityWindow ) {
                     this.getParent().removeActor(this);
                     return;
                 }
@@ -187,7 +187,7 @@ public class ProjectileManager {
         out.range = 10.0F;
         out.dx = dx * speedRatio;
         out.dy = dy * speedRatio;
-        out.setBounds(x, y, 1.3F, 1.7F);
+        out.setBounds(x, y, 1.3F/1.2f, 1.7F/1.2f);
         out.setOrigin(out.getWidth() / 2.0F, out.getHeight() / 2.0F);
         out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2(0.0F, 1.0F)));
         out.hitsEnemies = true;
