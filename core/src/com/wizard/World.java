@@ -9,9 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
 import com.wizard.enemies.EnemyShooter;
-import com.wizard.staffs.CandyStaff;
-import com.wizard.staffs.GhostStaff;
-import com.wizard.staffs.Staff;
+import com.wizard.staffs.*;
 
 import java.util.ArrayList;
 
@@ -22,6 +20,10 @@ public class World extends Stage {
     public static int indexLevel = -1;
     public static Character player;
     public static Staff currentStaff = null;
+
+    public static Staff PrimaryStaff = null;
+
+    public static Staff SecondaryStaff = null;
     public static ArrayList<Loot> lootList = new ArrayList<>();
     public World(){
         //this is where everything gets initiated, like texture manager and projectile manager
@@ -43,7 +45,13 @@ public class World extends Stage {
 
         loadNextLevel();
 
-        this.currentLevel.addActor(new Loot(1,1,"GreenCandyWHitBox.png",new CandyStaff()));
+        this.currentLevel.addActor(new Loot(1,1,"CandyBlastScroll.png",new CandyStaff()));
+
+        this.currentLevel.addActor(new Loot(1,3,"MintScroll.png",new MintStaff()));
+
+        this.currentLevel.addActor(new Loot(1,5,"LolipopWHitBox.png",new LollipopStaff()));
+
+        this.currentLevel.addActor(new Loot(1,7,"ChocBarWHitBox.png",new ChocBarStaff()));
 
         //event listener for a click (projectile fired)
         this.addListener(new InputListener(){
@@ -54,7 +62,7 @@ public class World extends Stage {
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 if (button == Input.Buttons.LEFT && currentStaff != null && currentStaff.canFire()){
                     //we want to make a projectile that fires this way
-                   currentStaff.fire(player.getX(),player.getY(),x, y);
+                    currentStaff.fire(player.getX(),player.getY(),x, y);
                     return true;
                 }
                 return super.touchDown(event, x, y, pointer, button);
@@ -64,19 +72,48 @@ public class World extends Stage {
                 if (keycode == Input.Keys.E){
                     Loot pickUp = CollisionManager.isCollidingLoot(player);
                     if (pickUp != null && pickUp.matchingStaff != null){
-                        currentStaff = pickUp.matchingStaff;
-                        Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
-                        Wizard.w.currentLevel.removeActor(pickUp);
-                        Wizard.o.bottomText.setText("");
-                        return true;
+                        if (PrimaryStaff == null) { // checking how to manipulate inventory depending on what number of items have already been picked up
+                            currentStaff = pickUp.matchingStaff;
+                            PrimaryStaff = pickUp.matchingStaff;
+                            Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
+                            Wizard.w.currentLevel.removeActor(pickUp);
+                        }
+                        else if (SecondaryStaff == null){
+                            SecondaryStaff = PrimaryStaff;
+                            currentStaff = pickUp.matchingStaff;
+                            PrimaryStaff = pickUp.matchingStaff;
+                            Wizard.o.inventory.setWeaponOne(PrimaryStaff.itemTexture);
+                            Wizard.o.inventory.setWeaponTwo(SecondaryStaff.itemTexture);
+                            Wizard.w.currentLevel.removeActor(pickUp);
+                        }
+                        else{
+                            Staff temp = Staff.getStaffType(PrimaryStaff);
+                            World.currentLevel.addActor(new Loot(player.getX(),player.getY(),temp.getItemTexture(),temp));
+                            currentStaff = pickUp.matchingStaff;
+                            PrimaryStaff = pickUp.matchingStaff;
+                            Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
+                            Wizard.w.currentLevel.removeActor(pickUp);
+                        }
 
                     }
                 }
+                else if(keycode == Input.Keys.Q){
+                    if (PrimaryStaff != null && SecondaryStaff != null){
+                        Staff temp = PrimaryStaff;
+                        PrimaryStaff = SecondaryStaff;
+                        SecondaryStaff = temp;
+                        currentStaff = PrimaryStaff;
+                        Wizard.o.inventory.setWeaponOne(PrimaryStaff.itemTexture);
+                        Wizard.o.inventory.setWeaponTwo(SecondaryStaff.itemTexture);
+                        return true;
+                    }
 
-
+                }
 
                 return super.keyDown(event, keycode);
             }
+
+
         });
 
 
