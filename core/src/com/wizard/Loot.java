@@ -14,7 +14,8 @@ public class Loot extends Entity{
     public Loot(float x, float y,String lootTexture, Staff matchinStaff) {
         super(0, 0, lootTexture);
         matchingStaff = matchinStaff;
-        this.setBounds(x,y,1.0f,1.0f);
+        float aspectRatio = (float)TextureManager.get(lootTexture).getHeight()/ (float)TextureManager.get(lootTexture).getWidth();
+        this.setBounds(x,y,0.7f, 0.7f*aspectRatio);
 
     }
     public void act(float deltaTime) {
