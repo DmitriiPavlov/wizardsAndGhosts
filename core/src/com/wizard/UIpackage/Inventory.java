@@ -7,6 +7,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
 import com.badlogic.gdx.utils.Align;
 import com.wizard.TextureManager;
+import com.wizard.Wizard;
 import org.w3c.dom.Text;
 
 public class Inventory extends Group {
