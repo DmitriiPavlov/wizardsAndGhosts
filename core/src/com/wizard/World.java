@@ -71,7 +71,7 @@ public class World extends Stage {
                 if (keycode == Input.Keys.E){
                     Loot pickUp = CollisionManager.isCollidingLoot(player);
                     if (pickUp != null && pickUp.matchingStaff != null){
-                        if (PrimaryStaff == null) {
+                        if (PrimaryStaff == null) { // checking how to manipulate inventory depending on what number of items have already been picked up
                             currentStaff = pickUp.matchingStaff;
                             PrimaryStaff = pickUp.matchingStaff;
                             Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
@@ -96,27 +96,22 @@ public class World extends Stage {
 
                     }
                 }
+                else if(keycode == Input.Keys.Q){
+                    if (PrimaryStaff != null && SecondaryStaff != null){
+                        Staff temp = PrimaryStaff;
+                        PrimaryStaff = SecondaryStaff;
+                        SecondaryStaff = temp;
+                        currentStaff = PrimaryStaff;
+                        Wizard.o.inventory.setWeaponOne(PrimaryStaff.itemTexture);
+                        Wizard.o.inventory.setWeaponTwo(SecondaryStaff.itemTexture);
+                        return true;
+                    }
+
+                }
 
                 return super.keyDown(event, keycode);
             }
-            /*
-            @Override
-            public boolean keyDown(InputEvent event, int keycode) {
-                if (PrimaryStaff != null && SecondaryStaff != null) {
 
-                    Staff temp = PrimaryStaff;
-                    PrimaryStaff = SecondaryStaff;
-                    SecondaryStaff = temp;
-                    currentStaff = PrimaryStaff;
-                    Wizard.o.inventory.setWeaponOne(PrimaryStaff.itemTexture);
-                    Wizard.o.inventory.setWeaponTwo(SecondaryStaff.itemTexture);
-                    return true;
-
-                }
-                return false;
-            }
-
-             */
 
         });
 

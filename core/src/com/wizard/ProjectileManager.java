@@ -18,7 +18,7 @@ public class ProjectileManager {
         public long timeCreated;
         public long lifeTime;
 
-        public int damage;
+        public int damage; // this is to store a dammage value in projectiles
 
         public String proName;// this will be used to call back to the staff class it originated from
 
@@ -129,7 +129,7 @@ public class ProjectileManager {
         float currSpeed = (float) Math.sqrt((double) (dx * dx + dy * dy));
         float speedRatio = 5.0F / currSpeed;
 
-        for (int i = -6; i < 6; ++i) {
+        for (int i = -45; i <= 45; i += 10) {
             Projectile out;
             if (Math.random() < 0.5) {
                 out = new Projectile("GreenCandyWHitBox.png");}
@@ -137,12 +137,26 @@ public class ProjectileManager {
                 out = new Projectile("YellowCandyWHitBox.png");}
             out.range = 4.0F;
             float multi = (float) ((int) (Math.random() * 4.0 - 2));
-            out.dx = dx + (multi) * speedRatio;
-            out.dy = dy + (multi) * speedRatio;
+
+            double dydx = dy / dx;
+            /*
+            float dyd = 1;
+            float dxd = 1;
+            if (dy < 0){ dyd = -1;};
+            if (dx < 0){ dxd = -1;};
+            */
+            float dxd = 1;
+            if (dx < 0){ dxd = -1;};
+
+            out.dx = (float)(Math.cos(Math.atan(dydx) + Math.toRadians(i)) * dxd) * 6;
+            out.dy = (float)(Math.sin(Math.atan(dydx) + Math.toRadians(i)) * dxd) * 6;
             out.setBounds(x, y, 1.0F, 0.7F);
             out.setOrigin(out.getWidth() / 2.0F, out.getHeight() / 2.0F);
             out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2((float) ((int) (Math.random() * 10.0 - 5.0)), (float) ((int) (Math.random() * 10.0 - 5.0)))));
             out.hitsEnemies = true;
+            System.out.println("dy = " + dy + " dx = " + dx);
+            System.out.println(Math.atan(dydx));
+            System.out.println(Math.cos(Math.atan(dydx)));
 
             out.damage = 1;
             out.proName = "Candy";
@@ -181,7 +195,7 @@ public class ProjectileManager {
             out.range = 6.0F;
             out.dx = (float)(Math.cos(i)) * speedRatio;//out.dx = (float)(Math.cos(i)) * speedRatio;
             out.dy = (float)(Math.sin(i)) * speedRatio;
-            System.out.println("i = " + i + "cos of i = " + Math.cos(i));
+
             out.setBounds(x, y, 0.5F, 0.7F);
             out.setOrigin(out.getWidth() / 2.0F, out.getHeight() / 2.0F);
             out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2(0.0F, 1.0F)));
