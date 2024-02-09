@@ -42,6 +42,7 @@ public class ProjectileManager {
                 }
             }
 
+
             if (TimeUtils.timeSinceMillis(timeCreated)>= lifeTime){
                 World.currentLevel.removeActor(this);
             }
