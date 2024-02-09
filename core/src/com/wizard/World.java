@@ -8,8 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
-import com.wizard.staffs.CandyStaff;
-import com.wizard.staffs.Staff;
+import com.wizard.staffs.*;
 
 import java.util.ArrayList;
 
@@ -20,6 +19,10 @@ public class World extends Stage {
     public static int indexLevel = -1;
     public static Character player;
     public static Staff currentStaff = null;
+
+    public static Staff PrimaryStaff = null;
+
+    public static Staff SecondaryStaff = null;
     public static ArrayList<Loot> lootList = new ArrayList<>();
     public World(){
         //this is where everything gets initiated, like texture manager and projectile manager
@@ -41,7 +44,13 @@ public class World extends Stage {
 
         loadNextLevel();
 
-        this.currentLevel.addActor(new Loot(1,1,"GreenCandyWHitBox.png",new CandyStaff()));
+        this.currentLevel.addActor(new Loot(1,1,"CandyBlastScroll.png",new CandyStaff()));
+
+        this.currentLevel.addActor(new Loot(1,3,"MintScroll.png",new MintStaff()));
+
+        this.currentLevel.addActor(new Loot(1,5,"LolipopWHitBox.png",new LollipopStaff()));
+
+        this.currentLevel.addActor(new Loot(1,7,"ChocBarWHitBox.png",new ChocBarStaff()));
 
         //event listener for a click (projectile fired)
         this.addListener(new InputListener(){
@@ -62,15 +71,53 @@ public class World extends Stage {
                 if (keycode == Input.Keys.E){
                     Loot pickUp = CollisionManager.isCollidingLoot(player);
                     if (pickUp != null && pickUp.matchingStaff != null){
-                        currentStaff = pickUp.matchingStaff;
-                        Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
-                        Wizard.w.currentLevel.removeActor(pickUp);
+                        if (PrimaryStaff == null) {
+                            currentStaff = pickUp.matchingStaff;
+                            PrimaryStaff = pickUp.matchingStaff;
+                            Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
+                            Wizard.w.currentLevel.removeActor(pickUp);
+                        }
+                        else if (SecondaryStaff == null){
+                            SecondaryStaff = PrimaryStaff;
+                            currentStaff = pickUp.matchingStaff;
+                            PrimaryStaff = pickUp.matchingStaff;
+                            Wizard.o.inventory.setWeaponOne(PrimaryStaff.itemTexture);
+                            Wizard.o.inventory.setWeaponTwo(SecondaryStaff.itemTexture);
+                            Wizard.w.currentLevel.removeActor(pickUp);
+                        }
+                        else{
+                            Staff temp = Staff.getStaffType(PrimaryStaff);
+                            World.currentLevel.addActor(new Loot(player.getX(),player.getY(),temp.getItemTexture(),temp));
+                            currentStaff = pickUp.matchingStaff;
+                            PrimaryStaff = pickUp.matchingStaff;
+                            Wizard.o.inventory.setWeaponOne(currentStaff.itemTexture);
+                            Wizard.w.currentLevel.removeActor(pickUp);
+                        }
 
                     }
                 }
 
                 return super.keyDown(event, keycode);
             }
+            /*
+            @Override
+            public boolean keyDown(InputEvent event, int keycode) {
+                if (PrimaryStaff != null && SecondaryStaff != null) {
+
+                    Staff temp = PrimaryStaff;
+                    PrimaryStaff = SecondaryStaff;
+                    SecondaryStaff = temp;
+                    currentStaff = PrimaryStaff;
+                    Wizard.o.inventory.setWeaponOne(PrimaryStaff.itemTexture);
+                    Wizard.o.inventory.setWeaponTwo(SecondaryStaff.itemTexture);
+                    return true;
+
+                }
+                return false;
+            }
+
+             */
+
         });
 
 

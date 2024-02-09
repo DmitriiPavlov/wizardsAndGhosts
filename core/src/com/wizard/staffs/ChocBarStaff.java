@@ -3,21 +3,22 @@ package com.wizard.staffs;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.wizard.ProjectileManager;
 
-public class CandyStaff extends Staff {
+public class ChocBarStaff extends Staff {
     private long timeLastFired;
-    public CandyStaff(){
-        super.itemTexture = "CandyBlastScroll.png";
+    public ChocBarStaff(){
+        super.itemTexture = "ChocBarWHitBox.png";
     }
     public void fire(float x, float y, float dx, float dy){
         timeLastFired = TimeUtils.millis();
-        ProjectileManager.createCandyBlast(dx,dy,x,y);
+        ProjectileManager.createChocBar(dx,dy,x,y);
     }
     public boolean canFire(){
-        return (TimeUtils.timeSinceMillis(timeLastFired) > 1200);
+        return (TimeUtils.timeSinceMillis(timeLastFired) > 700);
     }
 
-    public String getItemTexture(){
+    public String getItemTexture() {
         System.out.println(itemTexture);
         return itemTexture;
     }
+
 }
