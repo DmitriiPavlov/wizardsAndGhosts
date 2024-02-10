@@ -228,7 +228,7 @@ public class ProjectileManager {
         int dx = MathUtils.random(1,100)-50;
         int dy = MathUtils.random(1,100)-50;
         float currSpeed = (float) Math.sqrt((double) (dx * dx + dy * dy));
-        float speedRatio = 10.0F / currSpeed;
+        float speedRatio = 15.0F / currSpeed;
         Projectile out = new Projectile("WhiteGhost.png"){
             @Override
             public void getHitbox(Rectangle outRect) {

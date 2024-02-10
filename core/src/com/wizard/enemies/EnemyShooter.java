@@ -14,10 +14,14 @@ public class EnemyShooter extends Enemy {
         this.weapon = weapon;
     }
 
+    public EnemyShooter(float x, float y, float width, float height) {
+        super(x, y, width, height);
+        this.weapon = null;
+    }
     @Override
     public void act(float deltaTime) {
         super.act(deltaTime);
-        if (weapon.canFire()){
+        if (weapon!=null && weapon.canFire()){
             Rectangle target = new Rectangle();
             Wizard.w.player.getHitbox(target);
             Vector2 targetVec = new Vector2();

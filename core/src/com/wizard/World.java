@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.badlogic.gdx.utils.viewport.*;
+import com.wizard.enemies.EnemyManager;
 import com.wizard.enemies.EnemyShooter;
 import com.wizard.staffs.*;
 
@@ -170,6 +171,7 @@ public class World extends Stage {
                 return;
             };
             levelList.add(newLevel);
+            CollisionManager.currentLevel = newLevel;
             //spawns NPCS
             populateLevel(newLevel);
         }
@@ -178,9 +180,8 @@ public class World extends Stage {
         }
         if (currentLevel != null) currentLevel.remove();
         currentLevel = newLevel;
-
+        CollisionManager.currentLevel = newLevel;
         currentLevel.setPosition(0,0);
-        CollisionManager.currentLevel = currentLevel;
         this.addActor(currentLevel);
         currentLevel.setZIndex(1);
         player.setPosition(this.currentLevel.blockArray.length/2, 1);
@@ -219,6 +220,7 @@ public class World extends Stage {
     public void populateLevel(Level toPopulate){
         switch (indexLevel){
             case 0:
+                EnemyManager.addEnemyRandomly(5,EnemyManager.fastEnemy(1.0f,1.0f),toPopulate);
                 toPopulate.addActor(new Enemy(3,3,1,1.2F));
                 toPopulate.addActor(new Enemy(4,5,1,1.2F));
                 toPopulate.addActor(new Enemy(2,3,1,1.2F));
@@ -239,6 +241,9 @@ public class World extends Stage {
                 toPopulate.addActor(new EnemyShooter(1,11,1,1.2f,new GhostStaff()));
                 toPopulate.addActor(new EnemyShooter(1,13,1,1.2f,new GhostStaff()));
                 toPopulate.addActor(new EnemyShooter(1,15,2,2.4f,new GhostStaff()));
+                break;
+            case 3:
+                EnemyManager.addEnemyRandomly(5,EnemyManager.defaultEnemy(),toPopulate);
                 break;
             case 4:
                 toPopulate.addActor(new EnemyShooter(1,1,1,1.2f,new GhostStaff()));
