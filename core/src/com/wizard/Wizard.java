@@ -1,20 +1,30 @@
 package com.wizard;
 
 import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.wizard.UIpackage.Overlay;
+
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 
 public class Wizard extends ApplicationAdapter {
 
 	public static World w;
 	public static Overlay o;
-	
+	private Music Music;
+
 	@Override
 	public void create () {
 		w = new World();
 		o = new Overlay();
 		o.bottomText.setText("Use [WASD] to move and click to shoot!");
 		o.displayText("A mysterious feeling tells you to pick up that candy...");
+
+		Music = Gdx.audio.newMusic(Gdx.files.internal("Kubbi - Digestive biscuit  NO COPYRIGHT 8-bit Music.mp3"));
+		Music.setLooping(true);
+		Music.play();
 	}
 
 	@Override

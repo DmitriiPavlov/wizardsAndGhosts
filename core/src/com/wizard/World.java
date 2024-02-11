@@ -13,6 +13,7 @@ import com.wizard.enemies.EnemyShooter;
 import com.wizard.staffs.*;
 
 import java.util.ArrayList;
+import com.badlogic.gdx.audio.Sound;
 
 public class World extends Stage {
     public static Level currentLevel;
@@ -25,11 +26,14 @@ public class World extends Stage {
     public static Staff PrimaryStaff = null;
 
     public static Staff SecondaryStaff = null;
+
+    public Sound Woosh;
     public static ArrayList<Loot> lootList = new ArrayList<>();
     public World(){
         //this is where everything gets initiated, like texture manager and projectile manager
         super(new FitViewport(28,20));
 
+        Woosh = Gdx.audio.newSound(Gdx.files.internal("Whoosh Sounds Effects HD (No Copyright).mp3"));
 
         Gdx.input.setInputProcessor(this);
         BlockManager.loadAll();
@@ -46,13 +50,6 @@ public class World extends Stage {
 
         loadNextLevel();
 
-        this.currentLevel.addActor(new Loot(1,1,"CandyBlastScroll.png",new CandyStaff()));
-
-        this.currentLevel.addActor(new Loot(1,3,"MintScroll.png",new MintStaff()));
-
-        this.currentLevel.addActor(new Loot(1,5,"LolipopWHitBox.png",new LollipopStaff()));
-
-        this.currentLevel.addActor(new Loot(1,7,"ChocBarWHitBox.png",new ChocBarStaff()));
 
         //event listener for a click (projectile fired)
         this.addListener(new InputListener(){
@@ -64,6 +61,7 @@ public class World extends Stage {
                 if (button == Input.Buttons.LEFT && currentStaff != null && currentStaff.canFire()){
                     //we want to make a projectile that fires this way
                     currentStaff.fire(player.getX(),player.getY(),x, y);
+                    Woosh.play();
                     return true;
                 }
                 return super.touchDown(event, x, y, pointer, button);
@@ -220,18 +218,16 @@ public class World extends Stage {
     public void populateLevel(Level toPopulate){
         switch (indexLevel){
             case 0:
-                EnemyManager.addEnemyRandomly(5,EnemyManager.fastEnemy(1.0f,1.0f),toPopulate);
-                toPopulate.addActor(new Enemy(3,3,1,1.2F));
-                toPopulate.addActor(new Enemy(4,5,1,1.2F));
-                toPopulate.addActor(new Enemy(2,3,1,1.2F));
-                toPopulate.addActor(new Enemy(6,3,1,1.2F));
+                toPopulate.addActor(new Loot(10,7,"LolipopWHitBox.png",new LollipopStaff()));
                 break;
             case 1:
-                Wizard.o.displayText("Beckett:\nHello mortals, welcome to my realm!\nMwahahaha");
+                Wizard.o.displayText("Magic Candy:\nYou Must Feed The ghosts CANDY!\n Find different candy spells on the ground");
                 toPopulate.addActor(new Enemy(3,3,1,1.2F));
                 toPopulate.addActor(new Enemy(4,5,1,1.2F));
                 toPopulate.addActor(new Enemy(2,3,1,1.2F));
                 toPopulate.addActor(new Enemy(6,3,1,1.2F));
+                toPopulate.addActor(new Loot(2,4,"MintScroll.png",new MintStaff()));
+                toPopulate.addActor(new Loot(8,6,"CandyBlastScroll.png",new CandyStaff()));
                 break;
             case 2:
                 toPopulate.addActor(new EnemyShooter(1,1,1,1.2f,new GhostStaff()));
@@ -241,6 +237,7 @@ public class World extends Stage {
                 toPopulate.addActor(new EnemyShooter(1,11,1,1.2f,new GhostStaff()));
                 toPopulate.addActor(new EnemyShooter(1,13,1,1.2f,new GhostStaff()));
                 toPopulate.addActor(new EnemyShooter(1,15,2,2.4f,new GhostStaff()));
+                toPopulate.addActor(new Loot(6,3,"ChocBarWHitBox.png",new ChocBarStaff()));
                 break;
             case 3:
                 EnemyManager.addEnemyRandomly(5,EnemyManager.defaultEnemy(),toPopulate);
