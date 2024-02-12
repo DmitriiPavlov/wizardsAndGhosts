@@ -225,6 +225,7 @@ public class World extends Stage {
                 toPopulate.addActor(new Enemy(4,5,1,1.2F));
                 toPopulate.addActor(new Enemy(2,3,1,1.2F));
                 toPopulate.addActor(new Enemy(6,3,1,1.2F));
+                EnemyManager.addEnemyRandomly(5, EnemyManager.bigBoy(), toPopulate);
                 break;
             case 1:
                 Wizard.o.displayText("Beckett:\nHello mortals, welcome to my realm!\nMwahahaha");
@@ -246,17 +247,7 @@ public class World extends Stage {
                 EnemyManager.addEnemyRandomly(5,EnemyManager.defaultEnemy(),toPopulate);
                 break;
             case 4:
-                toPopulate.addActor(new EnemyShooter(1,1,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,3,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,7,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,9,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(2,1,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(2,3,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(2,7,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(2,9,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,11,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,13,1,1.2f,new GhostStaff()));
-                toPopulate.addActor(new EnemyShooter(1,15,2,2.4f,new GhostStaff()));
+                EnemyManager.addEnemyRandomly(5, EnemyManager.bigBoy(), toPopulate);
                 break;
         }
     }
