@@ -8,6 +8,7 @@ import com.wizard.staffs.Staff;
 
 public class EnemyShooter extends Enemy {
     public Staff weapon;
+    public long lastFired;
 
     public EnemyShooter(float x, float y, float width, float height, Staff weapon) {
         super(x, y, width, height);
@@ -26,7 +27,6 @@ public class EnemyShooter extends Enemy {
             Wizard.w.player.getHitbox(target);
             Vector2 targetVec = new Vector2();
             target.getCenter(targetVec);
-
 
             weapon.fire(this.centerX(),this.centerY(),Wizard.w.player.centerX(),Wizard.w.player.centerY());
         }

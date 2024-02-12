@@ -6,6 +6,7 @@ import com.wizard.ProjectileManager;
 
 public class GhostStaff extends Staff{
     public long timeLastFired;
+    String itemTexture = "ghostStaff";
     @Override
     public void fire(float x, float y, float targetX, float targetY) {
         timeLastFired = TimeUtils.millis();
@@ -24,5 +25,9 @@ public class GhostStaff extends Staff{
     @Override
     public boolean canFire() {
         return TimeUtils.timeSinceMillis(timeLastFired) > 500;
+    }
+
+    public String getItemTexture() {
+        return itemTexture;
     }
 }

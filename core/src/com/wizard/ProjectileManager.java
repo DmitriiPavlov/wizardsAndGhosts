@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.wizard.staffs.Staff;
 
+import java.util.ArrayList;
+
 public class ProjectileManager {
     //manages projectiles and their trajectories
     public static World stage;
@@ -124,7 +126,31 @@ public class ProjectileManager {
     public static void createLollipop(float dx, float dy, float x, float y) {
         float currSpeed = (float) Math.sqrt((double) (dx * dx + dy * dy));
         float speedRatio = 15.0F / currSpeed;
-        Projectile out = new Projectile("LolipopWHitBox.png");
+        Projectile out = new Projectile("LolipopWHitBox.png"){
+            ArrayList<Enemy> enemiesHit = new ArrayList<>();
+            public void act(float deltaTime) {
+                if (hitsEnemies) {
+                    Enemy collided = CollisionManager.isCollidingEnemy(this);
+
+                    if (collided != null && !enemiesHit.contains(collided)) {
+                        //here I would subtract the hp
+                        collided.updateHP(collided.HP - damage);
+                        enemiesHit.add(collided);
+                        Staff.ability(proName, dx, dy, this.getX(), this.getY());
+                        return;
+                    }
+                }
+
+
+                if (TimeUtils.timeSinceMillis(timeCreated)>= lifeTime){
+                    World.currentLevel.removeActor(this);
+                    return;
+                }
+
+                this.interpolateMotion(deltaTime);
+            }
+        };
+        out.lifeTime = 5*1000;
         out.range = 10.0F;
         out.dx = dx * speedRatio;
         out.dy = dy * speedRatio;
