@@ -18,7 +18,6 @@ public class MintStaff extends Staff {
         return (TimeUtils.timeSinceMillis(timeLastFired) > 100);
     }
     public String getItemTexture() {
-        System.out.println(itemTexture);
         return itemTexture;
     }
 

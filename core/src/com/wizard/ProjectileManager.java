@@ -6,6 +6,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.TimeUtils;
 import com.wizard.staffs.Staff;
 
+import java.util.ArrayList;
+
 public class ProjectileManager {
     //manages projectiles and their trajectories
     public static World stage;
@@ -49,7 +51,6 @@ public class ProjectileManager {
                 if (hit) {
                     //here I would subtract the hp
                     Wizard.w.player.updateHP(Wizard.w.player.HP - 1);
-                    System.out.println("here");
                     World.currentLevel.removeActor(this);
                     return;
                 }
@@ -124,7 +125,40 @@ public class ProjectileManager {
     public static void createLollipop(float dx, float dy, float x, float y) {
         float currSpeed = (float) Math.sqrt((double) (dx * dx + dy * dy));
         float speedRatio = 15.0F / currSpeed;
-        Projectile out = new Projectile("LolipopWHitBox.png");
+        Projectile out = new Projectile("LolipopWHitBox.png"){
+            ArrayList<Enemy> enemiesHit = new ArrayList<>();
+            public void act(float deltaTime){
+                if (hitsEnemies) {
+                    Enemy collided = CollisionManager.isCollidingEnemy(this);
+
+                    if (collided != null && !enemiesHit.contains(collided)) {
+                        //here I would subtract the hp
+                        collided.updateHP(collided.HP - damage);
+                        Staff.ability(proName, dx, dy, this.getX(), this.getY());
+                        this.enemiesHit.add(collided);
+                        return;
+                    }
+                }
+
+                if (hitsPlayer) {
+                    boolean hit = CollisionManager.isCollidingPlayer(this);
+                    if (hit) {
+                        //here I would subtract the hp
+                        Wizard.w.player.updateHP(Wizard.w.player.HP - 1);
+                        World.currentLevel.removeActor(this);
+                        return;
+                    }
+                }
+
+
+                if (TimeUtils.timeSinceMillis(timeCreated)>= lifeTime){
+                    World.currentLevel.removeActor(this);
+                    return;
+                }
+
+                this.interpolateMotion(deltaTime);
+            }
+        };
         out.range = 10.0F;
         out.dx = dx * speedRatio;
         out.dy = dy * speedRatio;
@@ -168,11 +202,8 @@ public class ProjectileManager {
             out.setOrigin(out.getWidth() / 2.0F, out.getHeight() / 2.0F);
             out.rotate((new Vector2(dx, dy)).angleDeg(new Vector2((float) ((int) (Math.random() * 10.0 - 5.0)), (float) ((int) (Math.random() * 10.0 - 5.0)))));
             out.hitsEnemies = true;
-            System.out.println("dy = " + dy + " dx = " + dx);
-            System.out.println(Math.atan(dydx));
-            System.out.println(Math.cos(Math.atan(dydx)));
 
-            out.damage = 1;
+            out.damage = 3;
             out.proName = "Candy";
 
             World.currentLevel.addActor(out);

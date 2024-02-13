@@ -20,6 +20,7 @@ public class World extends Stage {
 
     public static ArrayList<Level> levelList = new ArrayList<>();
     public static int indexLevel = -1;
+    public static int checkPoint = 0;
     public static Character player;
     public static Staff currentStaff = null;
 
@@ -95,6 +96,11 @@ public class World extends Stage {
                         }
 
                     }
+                    //this is hella hacky im just gonna say if it doesnt have a staff it has to be a chill pill
+                    else if(pickUp!=null){
+                        Wizard.w.currentLevel.removeActor(pickUp);
+                        player.updateHP(Math.min(player.maxHP, player.HP + 5));
+                    }
                 }
                 else if(keycode == Input.Keys.Q){
                     if (PrimaryStaff != null && SecondaryStaff != null){
@@ -150,15 +156,25 @@ public class World extends Stage {
 
 
         if (player.HP == 0){
-            loadPreviousLevel(0);
+            Wizard.o.displayText("In terror, you ran, ran, ran. \nAs you now look around yourself, you realize you've already been here before.");
+            loadPreviousLevel(checkPoint);
             player.updateHP(20);
             player.setY(3);
         }
-
+        System.out.println(currentLevel.collidableEnemies.size());
+        if (currentLevel.collidableEnemies.isEmpty()){
+            currentLevel.blockArray[this.currentLevel.blockArray.length/2][this.currentLevel.blockArray[0].length-1] =
+                    new Block("empty.png");
+            currentLevel.initGroup();
+        }
 
     }
 
     public void loadNextLevel(){
+        //this is so the same message doesnt stay on screen for a while
+        if (indexLevel !=-1) {
+            Wizard.o.displayText("");
+        }
         indexLevel+=1;
         //this sees if we're creating the level for the first time
         Level newLevel = null;
@@ -225,11 +241,13 @@ public class World extends Stage {
                 toPopulate.addActor(new Enemy(3,3,1,1.2F));
                 toPopulate.addActor(new Enemy(4,5,1,1.2F));
                 toPopulate.addActor(new Enemy(2,3,1,1.2F));
+                toPopulate.addActor(new ChillPill(2,2));
                 toPopulate.addActor(new Enemy(6,3,1,1.2F));
                 toPopulate.addActor(new Loot(2,4,"MintScroll.png",new MintStaff()));
                 toPopulate.addActor(new Loot(8,6,"CandyBlastScroll.png",new CandyStaff()));
                 break;
             case 2:
+                checkPoint = 1;
                 toPopulate.addActor(new EnemyShooter(1,1,1,1.2f,new GhostStaff()));
                 toPopulate.addActor(new EnemyShooter(1,3,1,1.2f,new GhostStaff()));
                 toPopulate.addActor(new EnemyShooter(1,7,1,1.2f,new GhostStaff()));
@@ -243,7 +261,11 @@ public class World extends Stage {
                 EnemyManager.addEnemyRandomly(5,EnemyManager.defaultEnemy(),toPopulate);
                 break;
             case 4:
+                checkPoint =2;
                 EnemyManager.addEnemyRandomly(5, EnemyManager.bigBoy(), toPopulate);
+                break;
+            case 5:
+                EnemyManager.addEnemyRandomly(25, EnemyManager.bigBoy(), toPopulate);
                 break;
         }
     }

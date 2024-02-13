@@ -19,7 +19,6 @@ public class ChocBarStaff extends Staff {
     }
 
     public String getItemTexture() {
-        System.out.println(itemTexture);
         return itemTexture;
     }
 

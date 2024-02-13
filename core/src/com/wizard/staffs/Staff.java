@@ -37,7 +37,7 @@ public abstract class Staff {
         else if (staff.getItemTexture().equals("LolipopWHitBox.png")) {
             return new LollipopStaff();
         }
-        else { return new MintStaff();}
+        else { return new GhostStaff();}
 
     }
 

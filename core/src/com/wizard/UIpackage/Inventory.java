@@ -41,7 +41,7 @@ public class Inventory extends Group {
         runeLabel.setAlignment(Align.center);
         runeLabel.setFontScale(0.5F);
 
-        this.addActor(runeLabel);
+//        this.addActor(runeLabel);
 
         Table runeTable =  new Table();
         runeTable.add(new Image(TextureManager.get("frame.png")));
@@ -51,7 +51,8 @@ public class Inventory extends Group {
         runeTable.add(new Image(TextureManager.get("frame.png")));
         runeTable.bottom();
         runeTable.setBounds(-10,110,50,200);
-        this.addActor(runeTable);
+        // can be enabled later when we want to add runes
+//        this.addActor(runeTable);
     }
 
     public void setWeaponOne(String weapon){

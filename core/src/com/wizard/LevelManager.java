@@ -10,20 +10,18 @@ public class LevelManager {
         FileHandle file = Gdx.files.internal("levels" +"/"+ name);
 
         String levelString = file.readString();
-
+//
         String[] lines = levelString.split("\n");
 
         int width = 0;
         int height = 0;
         int blockAmount = 0;
         HashMap<Integer,String> decoderMap = new HashMap<>();
-
         Level outLevel = new Level();
         for (int i = 0; i < lines.length; i++){
             String line = lines[i];
-            line = line.replaceAll("[^\\p{Graph}\n\r\t ]", "");
+
             if (i == 0){
-                line = line.replaceAll(" ", "");
                 width = bullCrapInt(line.split("x")[0].substring(0,2));
                 height = bullCrapInt(line.split("x")[1].substring(0,2));
 
@@ -50,7 +48,6 @@ public class LevelManager {
                 }
             }
         }
-        //this is so all the blocks become sub actors of the group, and are allowed their own coordinate system
         outLevel.initGroup();
         return outLevel;
     }

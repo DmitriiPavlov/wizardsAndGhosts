@@ -55,4 +55,5 @@ public class Enemy extends Entity{
     public boolean canAttack(){
         return TimeUtils.timeSinceMillis(lastAttack) > 100;
     }
+
 }

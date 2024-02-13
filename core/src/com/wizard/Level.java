@@ -1,6 +1,7 @@
 package com.wizard;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -35,7 +36,12 @@ public class Level extends Group {
 
     public void removeActor(Enemy e){
         collidableEnemies.remove(e);
+        //10% chance to spawn chill pills after enemies die
+        if (MathUtils.random(1,10) ==1){
+            this.addActor(new ChillPill(e.getX(),e.getY()));
+        }
         this.removeActor((Actor) e);
+
     }
 
     public void addActor(Loot e){

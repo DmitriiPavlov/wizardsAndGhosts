@@ -4,6 +4,7 @@ import com.badlogic.gdx.math.MathUtils;
 import com.wizard.CollisionManager;
 import com.wizard.Enemy;
 import com.wizard.Level;
+import com.wizard.staffs.GhostStaff;
 
 public class EnemyManager {
 
@@ -23,6 +24,12 @@ public class EnemyManager {
 
     public static Enemy largeEnemy(float x, float y){
         Enemy out =  new Enemy(x,y,2.0f,2.0f);
+        out.maxHP *= 5; out.HP *=5;
+        return out;
+    }
+
+    public static EnemyShooter bigBoy(){
+        EnemyShooter out =  new EnemyShooter(1,1,2.0f,2.0f, new GhostStaff());
         out.maxHP *= 5; out.HP *=5;
         return out;
     }
@@ -53,7 +60,7 @@ public class EnemyManager {
             out.maxHP = e.maxHP;
             out.HP = e.HP;
             out.SPEED = e.SPEED;
-            out.weapon = e.weapon;
+            out.weapon = GhostStaff.getStaffType(e.weapon);
             float rx; float ry;
             while(true){
                 rx = MathUtils.random() * (l.blockArray.length - 1);

@@ -18,7 +18,6 @@ public class LollipopStaff extends Staff {
         return (TimeUtils.timeSinceMillis(timeLastFired) > 900);
     }
     public String getItemTexture() {
-        System.out.println(itemTexture);
         return itemTexture;
     }
 

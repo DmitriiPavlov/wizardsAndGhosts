@@ -1,5 +1,6 @@
 package com.wizard;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
@@ -19,8 +20,13 @@ public class Wizard extends ApplicationAdapter {
 	public void create () {
 		w = new World();
 		o = new Overlay();
+
+		if (Gdx.app.getType() == Application.ApplicationType.WebGL) {
+			Gdx.graphics.setFullscreenMode(Gdx.graphics.getDisplayMode());
+			this.resize(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		}
 		o.bottomText.setText("Use [WASD] to move and click to shoot!");
-		o.displayText("A mysterious feeling tells you to pick up that candy...");
+		o.displayText("A mysterious feeling tells you to pick up that candy...\n..and verify that the game is in fullscreen!");
 
 		Music = Gdx.audio.newMusic(Gdx.files.internal("Kubbi - Digestive biscuit  NO COPYRIGHT 8-bit Music.mp3"));
 		Music.setLooping(true);
@@ -35,7 +41,7 @@ public class Wizard extends ApplicationAdapter {
 		o.act();
 		o.draw();
 	}
-	
+//
 	@Override
 	public void dispose () {
 	}
