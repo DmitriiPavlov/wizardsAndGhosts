@@ -6,12 +6,14 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.scenes.scene2d.utils.Drawable;
 import com.badlogic.gdx.scenes.scene2d.utils.SpriteDrawable;
+import com.badlogic.gdx.utils.TimeUtils;
 
 public class Character extends Entity{
     private Drawable leftWizard;
     private Drawable rightWizard;
     private Drawable downWizard;
 
+    long invinceFrameStart;
     public Character(float x, float y, float width, float height) {
         super(20, 10, "WizardFrontImproved.png");
         this.setBounds(x,y,width,height);
@@ -69,6 +71,15 @@ public class Character extends Entity{
 
         if (dx > 0){
             this.sprite.setDrawable(rightWizard);
+        }
+    }
+
+    public void updateHP(float newHP){
+        if (newHP < HP && TimeUtils.timeSinceMillis(invinceFrameStart) < 300){
+            return;
+        }
+        else{
+            super.updateHP(newHP);
         }
     }
 }

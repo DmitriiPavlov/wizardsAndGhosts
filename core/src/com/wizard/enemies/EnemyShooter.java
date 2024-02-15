@@ -21,14 +21,18 @@ public class EnemyShooter extends Enemy {
     @Override
     public void act(float deltaTime) {
         super.act(deltaTime);
-        if (weapon!=null && weapon.canFire()){
-            Rectangle target = new Rectangle();
-            Wizard.w.player.getHitbox(target);
-            Vector2 targetVec = new Vector2();
-            target.getCenter(targetVec);
+        float xDist = this.getX() - Wizard.w.player.getX();
+        float yDist = this.getY() - Wizard.w.player.getY();
+        if (lockOnRange*lockOnRange > xDist*xDist + yDist*yDist) {
+            if (weapon != null && weapon.canFire()) {
+                Rectangle target = new Rectangle();
+                Wizard.w.player.getHitbox(target);
+                Vector2 targetVec = new Vector2();
+                target.getCenter(targetVec);
 
 
-            weapon.fire(this.centerX(),this.centerY(),Wizard.w.player.centerX(),Wizard.w.player.centerY());
+                weapon.fire(this.centerX(), this.centerY(), Wizard.w.player.centerX(), Wizard.w.player.centerY());
+            }
         }
     }
 }

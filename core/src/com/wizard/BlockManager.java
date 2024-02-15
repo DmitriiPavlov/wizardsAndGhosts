@@ -11,11 +11,23 @@ public class BlockManager {
 
     public static void loadAll(){
         nameToTextures = TextureManager.loadFrom("blockTextures");
-
-        //we make all blocks passable through
         for (String name : nameToTextures.keySet()){
             setNameToNotCollidable(name);
         }
+        HashMap<String, Texture> nameToTextures2 = TextureManager.loadFrom("GraveYardBiome");
+
+        HashMap<String, Texture> nameToTextures3 = TextureManager.loadFrom("GraveYardBiomeCollidable");
+        for (String name : nameToTextures2.keySet()){
+            setNameToNotCollidable(name);
+        }
+
+        for (String name : nameToTextures3.keySet()){
+            setNameToCollidable(name);
+        }
+
+        nameToTextures.putAll(nameToTextures2);
+        nameToTextures.putAll(nameToTextures3);
+        //we make all blocks passable through
         setNameToCollidable("wall.png");
         setNameToCollidable("forestRoof.png");
     }

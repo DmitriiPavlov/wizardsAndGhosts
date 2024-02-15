@@ -5,6 +5,7 @@ import com.badlogic.gdx.utils.TimeUtils;
 
 public class Enemy extends Entity{
     public long lastAttack;
+    public float lockOnRange = 7.5f;
     public Enemy(float x, float y, float width, float height){
         //setting default parameters
         super(10,4,"GhostRedesign.png");
@@ -17,7 +18,12 @@ public class Enemy extends Entity{
     public void act(float deltaTime){
         Vector2 directionVector = new Vector2(CollisionManager.character.getX() - this.getX(), CollisionManager.character.getY() - this.getY());
         directionVector.nor();
-        interpolateMotion(this.SPEED*directionVector.x * deltaTime,this.SPEED*directionVector.y * deltaTime);
+        float xDist = this.getX() - Wizard.w.player.getX();
+        float yDist = this.getY() - Wizard.w.player.getY();
+        if (lockOnRange*lockOnRange > xDist*xDist + yDist*yDist) {
+            lockOnRange *= 1.5f;
+            interpolateMotion(this.SPEED * directionVector.x * deltaTime, this.SPEED * directionVector.y * deltaTime);
+        }
         //code that checks if the ghost should hit the player
         if (CollisionManager.isCollidingPlayer(this) && canAttack()){
             Wizard.w.player.updateHP(Wizard.w.player.HP-1);

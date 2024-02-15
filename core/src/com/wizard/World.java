@@ -261,11 +261,12 @@ public class World extends Stage {
                 EnemyManager.addEnemyRandomly(5,EnemyManager.defaultEnemy(),toPopulate);
                 break;
             case 4:
-                checkPoint =2;
+                checkPoint =3;
                 EnemyManager.addEnemyRandomly(5, EnemyManager.bigBoy(), toPopulate);
                 break;
             case 5:
-                EnemyManager.addEnemyRandomly(25, EnemyManager.bigBoy(), toPopulate);
+                checkPoint = 4;
+                EnemyManager.addEnemyRandomly(14, EnemyManager.bigBoy(), toPopulate);
                 break;
         }
     }
