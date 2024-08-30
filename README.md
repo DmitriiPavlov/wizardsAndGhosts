@@ -6,5 +6,4 @@
 
 ![](https://github.com/DmitriiPavlov/wizardsAndGhosts/blob/main/leveleditor.png)
 
-## Test it out at: 
-[](https://bisoncrusher99.itch.io/wizards-ghosts)
+[Click me to test it out!](https://bisoncrusher99.itch.io/wizards-ghosts)
