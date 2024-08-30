@@ -5,3 +5,6 @@
 ## Also comes with a level editor
 
 ![](https://github.com/DmitriiPavlov/wizardsAndGhosts/blob/main/leveleditor.png)
+
+## Test it out at: 
+[](https://bisoncrusher99.itch.io/wizards-ghosts)
